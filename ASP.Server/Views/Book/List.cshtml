@@ -1,0 +1,14 @@
+﻿@using ASP.Server.Model
+@model IEnumerable<Book>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="listeBooks">
+    <h1>Liste des livres:</h1>
+    <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
+    @foreach (var book in Model)
+    {
+    }
+</div>
+
