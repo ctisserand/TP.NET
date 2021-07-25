@@ -1,11 +1,11 @@
 # TP .NET
 
 # But
-Construire un service d’une bibliothèque en ligne avec son client Windows
-# Mise à disposition
-Un service de stockage des livres en ligne
+Construire un web service avec son client Windows pour gerer et consulter une bibliothèque de livres
+# A rendre
+Un web service de stockage et de gestion de livres en ligne
 
-Un logiciel sous Windows pour consulter les livres
+Un logiciel sous Windows pour consulter et lire les livres
 # Contrainte
 Langages autorisés : C#, HTML, Javascript
 
@@ -21,11 +21,11 @@ La partie client est dans le projet WPF.Reader
 # Aide
 Pour éviter les boucles infinies entre genre et livre lors de la conversion en JSON:
 
-- Utiliser l’attribut [JsonIgnore] sur une des propriétés pour éviter la boucle
+- Utiliser l’attribut `[JsonIgnore]` sur une des propriétés pour éviter la boucle
 
 Pour que Entity Framework retourne les genres avec les livres : 
 
-- Utilisez la méthode Include : libraryDbContext.Books.Include(b => b.Genres).Where(x => x.Price > 0)
+- Utilisez la méthode Include : `libraryDbContext.Books.Include(b => b.Genres).Where(x => x.Price > 0)`
 
 # Fonctionnalité attendue
 ## Serveur web
@@ -79,10 +79,10 @@ Cette api doit permettre de :
 Exemple:
 ```json
 {
-    "Id": 1, "Name": "titre", "Prix": 10.5,
+    "Id": 1, "Name": "titre", "Prix": 10.5, "Content": "contenu",
     "Genres": [{ "Id": 1, "Name": "Genre" }]
 }
-```json
+```
 ## Lister les genres disponibles: /genre
 Exemple:
 ```json
@@ -90,7 +90,8 @@ Exemple:
     "Id": 1, "Name": "Genre"
 }, {
     "Id": 2, "Name": "Genre2"
-}, { …
+}, { 
+    …
 }]
 ```
 
