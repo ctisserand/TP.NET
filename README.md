@@ -1,7 +1,4 @@
-||||
-| :- | :-: | -: |
-
-Rattrapage 2021
+# TP .NET
 
 # But
 Construire un service d’une bibliothèque en ligne avec son client Windows
@@ -88,7 +85,7 @@ Exemple:
 ```json
 ## Lister les genres disponibles: /genre
 Exemple:
-```
+```json
 [{
     "Id": 1, "Name": "Genre"
 }, {
@@ -183,7 +180,7 @@ Options :
 
 Les écrans doivent s’articuler de la façon suivante :
 
-![Schema](doc/Schema.jpg)
+![Schema](doc/Schema.png)
 
 Les carrés bleus représentent un écran
 Les carrés blancs représentent une fonctionnalité disponible sur l’écran
@@ -204,6 +201,4 @@ Vous pouvez sinon faire les requêtes à la main grâce à :
 - HttpClient ([System.Net.Http](https://docs.microsoft.com/en-us/dotnet/api/system.net.http?view=net-5.0))
 - Restsharp (<https://www.nuget.org/packages/RestClient.Net/>)
 
-||||
-| :- | :-: | -: |
 
