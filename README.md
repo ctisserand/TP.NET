@@ -28,8 +28,11 @@ Pour que Entity Framework retourne les genres avec les livres :
 - Utilisez la méthode Include : `libraryDbContext.Books.Include(b => b.Genres).Where(x => x.Price > 0)`
 
 # Fonctionnalité attendue
-## Serveur web
-Fonctionnalités attendues :
+## Livrable
+- [Une interface d'administration](#Administration)
+- [Une API REST](#Api)
+- [un Client lourd de lecture](#Application-Windows)
+
 ## Librairie
 Stocker une bibliothèque de livres consistant en :
 
@@ -45,10 +48,6 @@ Sachant que :
   - Un prix
   - Des genres
 - Un livre peut avoir plusieurs genres
-
-- [Une interface d'administration](#Administration)
-- [Une API REST](#Api)
-- [un Client lourd de lecture](#Application-Windows)
 
 # Administration
 Il est nécessaire pour ces fonctionnalités de mettre à disposition de l’utilisateur une interface web
