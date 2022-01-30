@@ -4,30 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF.Reader"
-        xmlns:model="clr-namespace:WPF.Reader.ViewModel"
+        xmlns:model="clr-namespace:WPF.Reader.ViewModel" d:DataContext="{d:DesignInstance Type=model:Navigator, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
+        DataContext="{DynamicResource navigator}"
     Title="MainWindow" Height="700" Width="800">
-    <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" DataContext="{Binding Path=(model:Navigator.Instance)}">
+    <Window.Resources>
+        <model:Navigator x:Key="navigator" />
+    </Window.Resources>
+    <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right" >
-            <Button Command="{Binding Path=(model:Navigator.Instance).GoTo}" CommandParameter="LIST" Width="50" Content="Accueil"/>
+            <Button Command="{Binding Path=GoToHome}" Width="50" Content="Accueil"/>
         </StackPanel>
         <Label DockPanel.Dock="Top" Content="Library system" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px"/>
-        <Frame DockPanel.Dock="Bottom" x:Name="Navigation" NavigationUIVisibility="Hidden" Margin="0">
-            <Frame.Style>
-                <Style TargetType="Frame">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=CurrentPage}" Value="{x:Static model:PageEnum.LIST}">
-                            <Setter Property="Source" Value="Pages/ListBooks.xaml" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=CurrentPage}" Value="{x:Static model:PageEnum.DETAIL}">
-                            <Setter Property="Source" Value="Pages/DetailsBook.xaml" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=CurrentPage}" Value="{x:Static model:PageEnum.READ}">
-                            <Setter Property="Source" Value="Pages/ReadBook.xaml" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Frame.Style>
-        </Frame>
+        <ContentPresenter  Content="{Binding Path=Frame}" x:Name="Navigation"/>
     </DockPanel>
 </Window>

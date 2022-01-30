@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Mvvm.Messaging.Messages;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -16,6 +17,5 @@ namespace WPF.Reader.Model
     // A vous de completer ce qu'est un Livre !!
     public class Book
     {
-
     }
 }

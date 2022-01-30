@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.ComponentModel;
 using WPF.Reader.Model;
-using WPF.Reader.Service;
 
 namespace WPF.Reader.ViewModel
 {
@@ -15,7 +7,14 @@ namespace WPF.Reader.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // n'oublier pas faire de faire le binding dans ReadBook.xaml !!!!
-        public Book CurrentBook { get => LibraryService.Instance.CurrentBook; }
+        // A vous de jouer maintenant
+    }
+
+    /* Cette classe sert juste a afficher des donnée de test dans le designer */
+    class InDesignReadBook : ReadBook
+    {
+        public InDesignReadBook() : base()
+        {
+        }
     }
 }

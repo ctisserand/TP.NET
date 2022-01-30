@@ -1,50 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WPF.Reader.Service;
 
 namespace WPF.Reader.ViewModel
 {
-    internal class NavigatorInstance : INotifyPropertyChanged
-    {
-        private void PageModel_StaticPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Instance)));
-        }
-
-        public Navigator Instance { get => Navigator.Instance; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
-    enum PageEnum
-    {
-        LIST,
-        DETAIL,
-        READ
-    }
+    /// <summary>
+    /// Aucune raison de toucher a cette classe, mais vous pouvez par contre utilisé les propriété GoBack et GoToHome
+    /// </summary>
     class Navigator : INotifyPropertyChanged
     {
-        private static readonly Navigator instance;
-        public static Navigator Instance { get => instance; }
-        public PageEnum CurrentPage { get; set; }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICommand GoBack { get; set; }
-        public ICommand GoTo { get; set; }
+        public Frame Frame => Ioc.Default.GetRequiredService<INavigationService>().Frame;
 
-        static Navigator()
-        {
-            instance = new Navigator();
-        }
-        public Navigator()
-        {
-            GoBack = new RelayCommand(x => CurrentPage = PageEnum.LIST);
-            GoTo = new RelayCommand(x => { CurrentPage = Enum.Parse<PageEnum>((String)x); });
-        }
+        public ICommand GoBack { get; init; } = new RelayCommand(x => { Ioc.Default.GetRequiredService<INavigationService>().Frame.GoBack(); });
+        public ICommand GoToHome { get; init; } = new RelayCommand(x => {
+            var service = Ioc.Default.GetRequiredService<INavigationService>();
+            if (service.Frame.CanGoBack)
+            {
+                service.Frame.RemoveBackEntry();
+                var entry = service.Frame.RemoveBackEntry();
+                while (entry != null)
+                {
+                    entry = service.Frame.RemoveBackEntry();
+                }
+            }
+            service.Navigate<ListBook>();
+        });
     }
 }
