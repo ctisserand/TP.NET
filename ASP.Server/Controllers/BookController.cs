@@ -42,7 +42,7 @@ namespace ASP.Server.Controllers
 
         public ActionResult<CreateBookModel> Create(CreateBookModel book)
         {
-            // Le IsValid est True uniquement si tous les champs de CreateBookModel marqué Required sont remplis
+            // Le IsValid est True uniquement si tous les champs de CreateBookModel marqués Required sont remplis
             if (ModelState.IsValid)
             {
                 // Il faut intéroger la base pour récupérer l'ensemble des objets genre qui correspond aux id dans CreateBookModel.Genres
