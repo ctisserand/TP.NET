@@ -56,11 +56,20 @@ namespace ASP.Server.Api
 
 
         // Vous vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
-        public ActionResult<List<Book>> GetBooks()
+        public ActionResult<List<Book>> GetBooks(int? id, int? limit, int? offset)
         {
             throw new NotImplementedException("You have to do it youtself");
         }
 
+        public ActionResult<Book> GetBook (int? id)
+        {
+            throw new NotImplementedException("You have to do it youtself");
+        }
+
+        public ActionResult<List<Genre>> GetGenres()
+        {
+            throw new NotImplementedException("You have to do it youtself");
+        }
     }
 }
 
