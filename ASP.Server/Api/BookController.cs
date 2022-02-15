@@ -58,7 +58,15 @@ namespace ASP.Server.Api
         // Vous vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
         public ActionResult<List<Book>> GetBooks(int? id, int? limit, int? offset)
         {
-            throw new NotImplementedException("You have to do it youtself");
+            // id -> id de genre
+            // limit -> qte
+            // offset -> skip
+            var req = libraryDbContext.Books;
+            if (id.HasValue)
+            {
+               // req.Where(book => book.);
+            }
+            return req.ToList();
         }
 
         public ActionResult<Book> GetBook (int? id)
