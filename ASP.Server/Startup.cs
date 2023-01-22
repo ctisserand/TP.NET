@@ -5,6 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ASP.Server.Database;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
+using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ASP.Server
 {
@@ -23,6 +27,45 @@ namespace ASP.Server
             services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDatabase"));
             services.AddControllersWithViews().AddNewtonsoftJson().AddRazorRuntimeCompilation();;
             services.AddSwaggerDocument();
+            services.AddMvc(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new CustomBinderProvider());
+            });
+        }
+        public class CustomBinderProvider : IModelBinderProvider
+        {
+            public IModelBinder GetBinder(ModelBinderProviderContext context)
+            {
+                if (context == null)
+                {
+                    throw new ArgumentNullException(nameof(context));
+                }
+
+                if (context.Metadata.ModelType == typeof(float))
+                {
+                    return new DecimalModelBinder();
+                }
+
+                return null;
+            }
+        }
+        public class DecimalModelBinder : IModelBinder
+        {
+            public Task BindModelAsync(ModelBindingContext bindingContext)
+            {
+                var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName).FirstValue;
+
+                float value = 0;
+                if(float.TryParse(valueProviderResult, NumberStyles.Float ,CultureInfo.InvariantCulture, out value))
+                {
+                    bindingContext.Result = ModelBindingResult.Success(value);
+                }
+                else
+                    bindingContext.ModelState.TryAddModelError(
+                            bindingContext.ModelName,
+                            "Could not parse value.");
+                return Task.CompletedTask;
+            }    
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder ASP_Server, IWebHostEnvironment env)

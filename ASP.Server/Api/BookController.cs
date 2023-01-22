@@ -55,10 +55,10 @@ namespace ASP.Server.Api
         //   - Ex: libraryDbContext.MyObjectCollection.Include(x => x.yyyyy).Where(x => x.yyyyyy.Contains(z)).Skip(i).Take(j).ToList()
 
 
-        // Vous vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
+        // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
         public ActionResult<List<Book>> GetBooks()
         {
-            throw new NotImplementedException("You have to do it youtself");
+            throw new NotImplementedException("You have to do it your self");
         }
 
     }
