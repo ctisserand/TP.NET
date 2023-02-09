@@ -22,10 +22,51 @@ La partie client est dans le projet WPF.Reader
 Pour éviter les boucles infinies entre genre et livre lors de la conversion en JSON:
 
 - Utiliser l’attribut `[JsonIgnore]` sur une des propriétés pour éviter la boucle
+- Utiliser le LazyLoading de facon pertinente
+  - Turn lazy loading off for serialization <https://learn.microsoft.com/en-us/ef/ef6/querying/related-data#turn-lazy-loading-off-for-serialization>
+- Utiliser un DTO (voir plus bas)
+
+---
+
+Pour renvoyer un objet différent de celui contenu dans votre base utilisé aussi un DTO
+- <https://learn.microsoft.com/en-us/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-5>
+
+---
 
 Pour que Entity Framework retourne les genres avec les livres : 
 
 - Utilisez la méthode Include : `libraryDbContext.Books.Include(b => b.Genres).Where(x => x.Price > 0)`
+- Utiliser le LazyLoading
+  - <https://learn.microsoft.com/en-us/ef/ef6/querying/related-data>
+
+---
+
+En WPF certain évenements ne suportent pas les comandes utilisez le package [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf)
+  - Exemple  
+    view.xaml
+    ```xml
+    <page xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors">
+      ...
+      <ListBox ItemsSource="{Binding ChangeMe}">
+        <behaviours:Interaction.Triggers>
+          <behaviours:EventTrigger EventName="SelectionChanged">
+              <behaviours:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
+          </behaviours:EventTrigger>
+        </behaviours:Interaction.Triggers>
+      </ListBox>
+      ...
+    </page>
+    ```
+    viewmodel.cs
+    ```cs
+    private RelayCommand selectionChangedCommand;
+    public ICommand SelectionChangedCommand => selectionChangedCommand ??= new RelayCommand(SelectionChanged);
+    
+    private void SelectionChanged(object commandParameter)
+    {
+    
+    }
+    ```
 
 # Fonctionnalité attendue
 ## Livrable
@@ -58,11 +99,18 @@ Un utilisateur doit pouvoir :
 - supprimer des livres de la bibliothèque
 - Consulter la liste de tous les livres
 - Consulter la liste de tous les genres
-
-Option : 
-
 - Faire une interface pour ajouter de nouveaux genres 
 - Modifier un livre existant
+
+Options :
+- Remplacer le champs autheur (de type string) de la classe livre par une laison vers une classe Autheur
+  - On considère qu'un livre n'a qu'un seul et unique autheur (même si dans la réalité ce n'est pas vraix)
+  - La class autheur à besoin d'au minimum du nom de l'autheur
+- Afficher des filtres dans la liste des livres pour filtrer par autheurs / genres
+- Une page affichants les statistiques sur :
+  - le nombre de libres total disponible
+  - le nombre de livres par autheur
+  - Le nombre maximum, minmum, median et moyen de mots d'un livre
 
 Une ébauche de ce qui est attendu ce trouve dans ASP.Server/Controllers/BookController.cs et GenreController.cs
 
@@ -97,8 +145,16 @@ Exemple:
 ## Lister les livres (sans le contenu) : 
 - Le résultat doit être paginé
 - La recherche doit aussi pouvoir être faite en spécifiant un genre
+- La réponse doit contenir un header qui contient l'index de début et de fin des livres que vous retournez ainsi que le nombre total de livres de votre séléction
 
-Exemple :
+Exemple Header:
+- /book?offset=10&limit=15
+```http
+HTTP/1.1 200
+Content-Type: application/json
+Pagination: 10-25/536
+```
+Exemple Body :
 - /book
 ```json
 [{
@@ -175,6 +231,14 @@ Options :
 
 - Lister tous les genres
 - Afficher les *N* premiers livres d’un genre (vous pouvez définir la limite comme bon vous semble)
+- Gerer la pagination de vos livres (Scroll infini, pages ou autres)
+- Afficher un livre avec formatage: Style de police, couleur, taille du texte, ...
+  - Pensé au RTF, HTML, PDF, ...
+  - Dans un premier temps gérez uniquement 1 format. Si vous avez finit, vous pouvez gérer plusieurs formats en même temps
+- Lire le livre grace à l'API [System.Speech.SpeechSynthesizer](https://learn.microsoft.com/en-us/dotnet/api/system.speech.synthesis.speechsynthesizer?view=netframework-4.8.1&viewFallbackFrom=net-7.0)
+  - Géré la lecture / l'arrêt / la pause / la reprise
+  - Changer les boutons de controle en fonction de l'état de la lecture (comme un lecteur vidéo, ex: youtube)
+  - Commencer à lire a partir de la séléction de l'utilisateur, L'utilisateur doit pouvoir faire un clic droit sur un mot et lancer la lecture a partir de ce mot
 
 À tout moment l’utilisateur doit pouvoir revenir à l’accueil, il n’est pas nécessaire de faire un bouton pour revenir à la page précédente
 
@@ -191,9 +255,10 @@ L’application doit pouvoir recevoir les livres depuis le serveur développé d
 
 Pour générer le code client vous pouvez utiliser :
 
+- OpenAPI Generator Plugin (<https://marketplace.visualstudio.com/items?itemName=ChristianResmaHelle.ApiClientCodeGenerator2022>)
+- OpenApi Generator (<https://github.com/OpenAPITools/openapi-generator>)
 - Unchased NSwag (<https://marketplace.visualstudio.com/items?itemName=Unchase.unchaseopenapiconnectedservice>) 
 - NswagStudio (<https://github.com/RicoSuter/NSwag/wiki/NSwagStudio>)
-- OpenApiGenerator
 - ou un autre
 
 Vous pouvez sinon faire les requêtes à la main grâce à :
