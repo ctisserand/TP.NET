@@ -11,12 +11,18 @@
     justify-content:space-between;
     flex-wrap:wrap;
 }
+
 input, textarea, select {
     flex-basis:85%;
 }
 label {
     flex-basis:10%;
 }
+
+ .required:after {
+        content: " *";
+        color: red;
+    }
 </style>
 
 <h2>Edit</h2>
@@ -32,7 +38,7 @@ label {
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label required  col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -40,7 +46,7 @@ label {
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Auteur, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Auteur, htmlAttributes: new { @class = "control-label required  col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Auteur, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Auteur, "", new { @class = "text-danger" })
@@ -48,23 +54,26 @@ label {
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Contenu, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Contenu, htmlAttributes: new { @class = "control-label required  col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Contenu, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Contenu, "", new { @class = "text-danger" })
             </div>
         </div>
-            <div class="form-group">
-            @Html.LabelFor(model => model.Prix, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Prix, htmlAttributes: new { @class = "control-label required col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Prix, new { htmlAttributes = new { @class = "form-control",@type= "number" } })
                 @Html.ValidationMessageFor(model => model.Prix, "", new { @class = "text-danger" })
             </div>
             <div class="input-group">
-            <label asp-for="GenresSelectionne"></label>
-            <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
-            <select asp-for="GenresSelectionne" asp-items="@(new SelectList(Model.AllGenres,"Id","Nom"))">
-            </select>
+
+                @Html.LabelFor(m => m.GenresSelectionne,"Genre sélectionné", htmlAttributes: new { @class = "control-label required col-8" })
+
+                <div class="col-10">
+                    @Html.DropDownList("GenresSelectionne", new  MultiSelectList(Model.AllGenres,"Id","Nom"),new { @class = "form-control multiple" ,multiple="multiple"})
+                    @Html.ValidationMessageFor(model => model.Prix, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
