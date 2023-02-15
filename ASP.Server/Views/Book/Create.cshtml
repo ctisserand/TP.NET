@@ -25,9 +25,21 @@ label {
         <input asp-for="Name" />
     </div>
     <div class="input-group">
-        <label asp-for="Genres"></label>
+        <label asp-for="Auteur"></label>
+        <input asp-for="Auteur" />
+    </div>
+        <div class="input-group">
+        <label asp-for="Prix"></label>
+        <input asp-for="Prix" />
+    </div>
+    <div class="input-group">
+        <label asp-for="Contenu"></label>
+        <input asp-for="Contenu" />
+    </div>
+    <div class="input-group">
+        <label asp-for="GenresSelectionne"></label>
         <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
-        <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Name"))">
+        <select asp-for="GenresSelectionne" asp-items="@(new SelectList(Model.AllGenres,"Id","Nom"))">
         </select>
     </div>
     <input type="submit" value="Add" style="width: 100%; margin-top: 50px" />

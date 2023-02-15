@@ -7,9 +7,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ASP.Server.Database;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+using ASP.Server.Service;
 
 namespace ASP.Server.Api
 {
+    public class BookDto
+    {
+        [Required]
+        public string Nom { get; set; }
+        public int Id { get; set; }
+        public string Contenu { get; set; }
+        public string Auteur { get; set; }
+        public float Prix { get; set; }
+
+        // Liste des genres a afficher à l'utilisateur
+        public List<GenreDto> Genres { get; init; }
+    }
+
+    public class BookNoContenu
+    {
+        [Required]
+        public string Nom { get; set; }
+        public int Id { get; set; }
+        public string Auteur { get; set; }
+        public float Prix { get; set; }
+
+        // Liste des genres a afficher à l'utilisateur
+        public List<GenreDto> Genres { get; init; }
+    }
+
+    public class GenreDto
+    {
+        public int Id { get; set; }
+        public string Nom { get; set; }
+    }
 
     [Route("/api/[controller]/[action]")]
     [ApiController]
@@ -22,45 +55,35 @@ namespace ASP.Server.Api
             this.libraryDbContext = libraryDbContext;
         }
 
-        // Methode a ajouter : 
-        // - GetBooks
-        //   - Entrée: Optionel -> Liste d'Id de genre, limit -> defaut à 10, offset -> défaut à 0
-        //     Le but de limit et offset est dé créer un pagination pour ne pas retourner la BDD en entier a chaque appel
-        //   - Sortie: Liste d'object contenant uniquement: Auteur, Genres, Titre, Id, Prix
-        //     la liste restourner doit être compsé des élément entre <offset> et <offset + limit>-
-        //     Dans [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] si offset=8 et limit=5, les élément retourner seront : 8, 9, 10, 11, 12
-
-        // - GetBook
-        //   - Entrée: Id du livre
-        //   - Sortie: Object livre entier
-
-        // - GetGenres
-        //   - Entrée: Rien
-        //   - Sortie: Liste des genres
-
-        // Aide:
-        // Pour récupéré un objet d'une table :
-        //   - libraryDbContext.MyObjectCollection.<Selecteurs>.First()
-        // Pour récupéré des objets d'une table :
-        //   - libraryDbContext.MyObjectCollection.<Selecteurs>.ToList()
-        // Pour faire une requète avec filtre:
-        //   - libraryDbContext.MyObjectCollection.<Selecteurs>.Skip().<Selecteurs>
-        //   - libraryDbContext.MyObjectCollection.<Selecteurs>.Take().<Selecteurs>
-        //   - libraryDbContext.MyObjectCollection.<Selecteurs>.Where(x => x == y).<Selecteurs>
-        // Pour récupérer une 2nd table depuis la base:
-        //   - .Include(x => x.yyyyy)
-        //     ou yyyyy est la propriété liant a une autre table a récupéré
-        //
-        // Exemple:
-        //   - Ex: libraryDbContext.MyObjectCollection.Include(x => x.yyyyy).Where(x => x.yyyyyy.Contains(z)).Skip(i).Take(j).ToList()
-
-
-        // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
-        public ActionResult<List<Book>> GetBooks()
+ 
+        [Route("/api/[controller]")]
+        public ActionResult<List<BookNoContenu>> GetBooks([FromQuery] List<int> genre,[FromQuery] int offset = 1, [FromQuery] int limit = 20)
         {
-            throw new NotImplementedException("You have to do it your self");
+            HttpContext.Response.Headers.Add("Pagination", offset+"-"+(offset+limit)+"/"+this.libraryDbContext.Books.Count());
+            
+            try
+            {
+                bool filter = genre!=null;
+                List<Book> listBooks;
+                if (filter)
+                    listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset && b.Genres.Any(x => genre.Any(y => y == x.Id))).OrderBy(b => b.Id).Take(limit).ToList();
+                else listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset).OrderBy(b => b.Id).Take(limit).ToList();
+                List<BookNoContenu> booksNoContenu = new List<BookNoContenu>();
+                listBooks.ForEach(book => booksNoContenu.Add(LibraryService.ConvertToBookNoContenu(book)));
+                return booksNoContenu;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
+        [Route("/api/[controller]/{id}")]
+        public ActionResult<BookDto> Book(int id = 1)
+        {
+            return LibraryService.ConvertToBookDto(this.libraryDbContext.Books.Include(b => b.Genres).Where(b=>b.Id == id).FirstOrDefault());
+        }
     }
 }
 
