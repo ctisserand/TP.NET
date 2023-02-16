@@ -28,4 +28,19 @@
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="RestSharp" Version="108.0.2" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ViewModel\Swagger.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Swagger.json</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ViewModel\Swagger.json">
+      <Generator>OpenApiCodeGenerator</Generator>
+      <LastGenOutput>Swagger.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>

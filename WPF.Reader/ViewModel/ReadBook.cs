@@ -1,5 +1,10 @@
-﻿using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 using WPF.Reader.Model;
+using WPF.Reader.Service;
 
 namespace WPF.Reader.ViewModel
 {
@@ -7,14 +12,19 @@ namespace WPF.Reader.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // A vous de jouer maintenant
+        public Book CurrentBook { set;  get; }
+
+        public ReadBook(Book book)
+        {
+            book.Contenu = Ioc.Default.GetRequiredService<LibraryService>().GetBookById(book).Contenu;
+            CurrentBook = book;
+        }
     }
 
     /* Cette classe sert juste a afficher des donnée de test dans le designer */
     class InDesignReadBook : ReadBook
     {
-        public InDesignReadBook() : base()
-        {
-        }
+        public InDesignReadBook() : base(new Book() /*{ Title = "Test Book" }*/) { }
+
     }
 }

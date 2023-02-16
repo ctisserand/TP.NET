@@ -1,0 +1,198 @@
+{
+  "x-generator": "NSwag v13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "My Title",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5001",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "text/plain",
+    "application/json",
+    "text/json"
+  ],
+  "paths": {
+    "/api/Book": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "operationId": "Book_GetBooks",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "genre",
+            "in": "query",
+            "collectionFormat": "multi",
+            "x-nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "type": "integer",
+            "name": "offset",
+            "in": "query",
+            "format": "int32",
+            "default": 1,
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "limit",
+            "in": "query",
+            "format": "int32",
+            "default": 20,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BookNoContenu"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Book/{id}": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "operationId": "Book_Book",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "default": 1,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/BookDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/Genre": {
+      "get": {
+        "tags": [
+          "Genre"
+        ],
+        "operationId": "Genre_GetGenres",
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GenreDto"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BookNoContenu": {
+      "type": "object",
+      "required": [
+        "nom",
+        "id",
+        "prix"
+      ],
+      "properties": {
+        "nom": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "auteur": {
+          "type": "string"
+        },
+        "prix": {
+          "type": "number",
+          "format": "float"
+        },
+        "genres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GenreDto"
+          }
+        }
+      }
+    },
+    "GenreDto": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nom": {
+          "type": "string"
+        }
+      }
+    },
+    "BookDto": {
+      "type": "object",
+      "required": [
+        "nom",
+        "id",
+        "prix"
+      ],
+      "properties": {
+        "nom": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "contenu": {
+          "type": "string"
+        },
+        "auteur": {
+          "type": "string"
+        },
+        "prix": {
+          "type": "number",
+          "format": "float"
+        },
+        "genres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GenreDto"
+          }
+        }
+      }
+    }
+  }
+}

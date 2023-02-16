@@ -15,6 +15,9 @@
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right" >
             <Button Command="{Binding Path=GoToHome}" Width="50" Content="Accueil"/>
         </StackPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center" >
+            <Button Command="{Binding Path=GoToListOfGenres}" Width="50" Content="ListerGenres"/>
+        </StackPanel>
         <Label DockPanel.Dock="Top" Content="Library system" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px"/>
         <ContentPresenter  Content="{Binding Path=Frame}" x:Name="Navigation"/>
     </DockPanel>

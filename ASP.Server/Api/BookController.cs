@@ -82,7 +82,14 @@ namespace ASP.Server.Api
         [Route("/api/[controller]/{id}")]
         public ActionResult<BookDto> Book(int id = 1)
         {
-            return LibraryService.ConvertToBookDto(this.libraryDbContext.Books.Include(b => b.Genres).Where(b=>b.Id == id).FirstOrDefault());
+            try
+            {
+                return LibraryService.ConvertToBookDto(this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id == id).FirstOrDefault());
+            }
+            catch
+            {
+                return NotFound("Pas de book avec id n°" + id);
+            }
         }
     }
 }

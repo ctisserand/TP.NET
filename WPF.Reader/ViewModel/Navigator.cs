@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WPF.Reader.Pages;
 using WPF.Reader.Service;
 
 namespace WPF.Reader.ViewModel
@@ -29,5 +30,20 @@ namespace WPF.Reader.ViewModel
             }
             service.Navigate<ListBook>();
         });
+        public ICommand GoToListOfGenres { get; init; } = new RelayCommand(x => {
+            var service = Ioc.Default.GetRequiredService<INavigationService>();
+            if (service.Frame.CanGoBack)
+            {
+                service.Frame.RemoveBackEntry();
+                var entry = service.Frame.RemoveBackEntry();
+                while (entry != null)
+                {
+                    entry = service.Frame.RemoveBackEntry();
+                }
+            }
+            service.Navigate<ListGenre>();
+        });
+
+
     }
 }
