@@ -24,14 +24,14 @@ namespace ASP.Server.Service
         {
             List<GenreDto> genres = new List<GenreDto>();
             book.Genres.ForEach(g => genres.Add(new GenreDto() { Id = g.Id, Nom = g.Nom, })) ;
-            return new BookNoContenu { Id = book.Id, Auteur = book.Auteur, Nom = book.Nom, Prix = book.Prix, Genres = genres };
+            return new BookNoContenu { Id = book.Id, Auteur = book.Auteur.Nom, Nom = book.Nom, Prix = book.Prix, Genres = genres };
         }
 
         public static BookDto ConvertToBookDto(Book book)
         {
             List<GenreDto> genres = new List<GenreDto>();
             book.Genres.ForEach(g => genres.Add(new GenreDto() { Id = g.Id, Nom = g.Nom, }));
-            return new BookDto { Id = book.Id, Auteur = book.Auteur, Nom = book.Nom, Prix = book.Prix, Contenu = book.Contenu, Genres = genres };
+            return new BookDto { Id = book.Id, Auteur = book.Auteur.Nom, Nom = book.Nom, Prix = book.Prix, Contenu = book.Contenu, Genres = genres };
         }
 
         public static GenreDto ConvertToGenreDto(Genre genre)

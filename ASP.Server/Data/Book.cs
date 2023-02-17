@@ -13,7 +13,7 @@ namespace ASP.Server.Model
         public int Id { get; set; }
         [Required]
         public string Nom { get; set; }
-        public string Auteur { get; set; } 
+        public Auteur Auteur { get; set; } 
         public string Contenu { get; set; }
         [Required]
         public float Prix { get; set; }

@@ -66,8 +66,8 @@ namespace ASP.Server.Api
                 bool filter = genre!=null;
                 List<Book> listBooks;
                 if (filter)
-                    listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset && b.Genres.Any(x => genre.Any(y => y == x.Id))).OrderBy(b => b.Id).Take(limit).ToList();
-                else listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset).OrderBy(b => b.Id).Take(limit).ToList();
+                    listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id >= offset && b.Genres.Any(x => genre.Any(y => y == x.Id))).OrderBy(b => b.Id).Take(limit).ToList();
+                else listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id >= offset).OrderBy(b => b.Id).Take(limit).ToList();
                 List<BookNoContenu> booksNoContenu = new List<BookNoContenu>();
                 listBooks.ForEach(book => booksNoContenu.Add(LibraryService.ConvertToBookNoContenu(book)));
                 return booksNoContenu;
@@ -84,7 +84,7 @@ namespace ASP.Server.Api
         {
             try
             {
-                return LibraryService.ConvertToBookDto(this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id == id).FirstOrDefault());
+                return LibraryService.ConvertToBookDto(this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id == id).FirstOrDefault());
             }
             catch
             {
