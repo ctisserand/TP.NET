@@ -65,7 +65,8 @@ namespace WPF.Reader.Service
 
         public async void SearchAllBooks()
         {
-            var books = await new BookApi().BookGetBooksAsync();
+            List<int> ints = new List<int>(2);
+            var books = await new BookApi().BookGetBooksAsync(ints);
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Books.Clear();

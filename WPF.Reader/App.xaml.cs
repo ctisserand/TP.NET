@@ -26,7 +26,7 @@ namespace WPF.Reader
                 .AddSingleton(new LibraryService())
                 .BuildServiceProvider());
 
-            Ioc.Default.GetRequiredService<INavigationService>().Navigate<ListBook>();
+            Ioc.Default.GetRequiredService<INavigationService>().Navigate<Accueil>();
         }
     }
 }

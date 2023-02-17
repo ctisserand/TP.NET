@@ -55,28 +55,22 @@ namespace ASP.Server.Api
             this.libraryDbContext = libraryDbContext;
         }
 
- 
+
         [Route("/api/[controller]")]
-        public ActionResult<List<BookNoContenu>> GetBooks([FromQuery] List<int> genre,[FromQuery] int offset = 1, [FromQuery] int limit = 20)
+        public ActionResult<List<BookNoContenu>> GetBooks([FromQuery] List<int> genre, [FromQuery] int offset = 1, [FromQuery] int limit = 20)
         {
-            HttpContext.Response.Headers.Add("Pagination", offset+"-"+(offset+limit)+"/"+this.libraryDbContext.Books.Count());
-            
-            try
-            {
-                bool filter = genre!=null;
-                List<Book> listBooks;
-                if (filter)
-                    listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset && b.Genres.Any(x => genre.Any(y => y == x.Id))).OrderBy(b => b.Id).Take(limit).ToList();
-                else listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset).OrderBy(b => b.Id).Take(limit).ToList();
-                List<BookNoContenu> booksNoContenu = new List<BookNoContenu>();
-                listBooks.ForEach(book => booksNoContenu.Add(LibraryService.ConvertToBookNoContenu(book)));
-                return booksNoContenu;
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            
+            HttpContext.Response.Headers.Add("Pagination", offset + "-" + (offset + limit) + "/" + this.libraryDbContext.Books.Count());
+
+            bool filter = false;
+            if(genre!=null)
+                filter = genre.Count >0;
+            List<Book> listBooks;
+            if (filter)
+                listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset && b.Genres.Any(x => genre.Any(y => y == x.Id))).OrderBy(b => b.Id).Take(limit).ToList();
+            else listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset).OrderBy(b => b.Id).Take(limit).ToList();
+            List<BookNoContenu> booksNoContenu = new List<BookNoContenu>();
+            listBooks.ForEach(book => booksNoContenu.Add(LibraryService.ConvertToBookNoContenu(book)));
+            return booksNoContenu;
         }
 
         [Route("/api/[controller]/{id}")]
