@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="ViewModel\Swagger.cs">
+    <Compile Update="Swagger.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Swagger.json</DependentUpon>
@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ViewModel\Swagger.json">
+    <None Update="Swagger.json">
       <Generator>OpenApiCodeGenerator</Generator>
       <LastGenOutput>Swagger.cs</LastGenOutput>
     </None>

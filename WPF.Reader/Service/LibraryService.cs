@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
+using WPF.Reader.Api;
 using WPF.Reader.Model;
-using WPF.Reader.ViewModel.Api;
-using WPF.Reader.ViewModel.Model;
 
 namespace WPF.Reader.Service
 {
@@ -65,8 +64,7 @@ namespace WPF.Reader.Service
 
         public async void SearchAllBooks()
         {
-            List<int> ints = new List<int>(2);
-            var books = await new BookApi().BookGetBooksAsync(ints);
+            List<BookNoContenu> books = await new BookApi().BookGetBooksAsync();
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Books.Clear();

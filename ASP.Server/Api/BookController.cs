@@ -59,18 +59,29 @@ namespace ASP.Server.Api
         [Route("/api/[controller]")]
         public ActionResult<List<BookNoContenu>> GetBooks([FromQuery] List<int> genre, [FromQuery] int offset = 1, [FromQuery] int limit = 20)
         {
-            HttpContext.Response.Headers.Add("Pagination", offset + "-" + (offset + limit) + "/" + this.libraryDbContext.Books.Count());
+            HttpContext.Response.Headers.Add("Pagination", offset+"-"+(offset+limit)+"/"+this.libraryDbContext.Books.Count());
+            
+            try
+            {
+                bool filter = false;
+                if(genre != null)
+                {
+                    filter = genre.Count > 0;
+                }
 
-            bool filter = false;
-            if(genre!=null)
-                filter = genre.Count >0;
-            List<Book> listBooks;
-            if (filter)
-                listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset && b.Genres.Any(x => genre.Any(y => y == x.Id))).OrderBy(b => b.Id).Take(limit).ToList();
-            else listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id >= offset).OrderBy(b => b.Id).Take(limit).ToList();
-            List<BookNoContenu> booksNoContenu = new List<BookNoContenu>();
-            listBooks.ForEach(book => booksNoContenu.Add(LibraryService.ConvertToBookNoContenu(book)));
-            return booksNoContenu;
+                List<Book> listBooks;
+                if (filter)
+                    listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id >= offset && b.Genres.Any(x => genre.Any(y => y == x.Id))).OrderBy(b => b.Id).Take(limit).ToList();
+                else listBooks = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id >= offset).OrderBy(b => b.Id).Take(limit).ToList();
+                List<BookNoContenu> booksNoContenu = new List<BookNoContenu>();
+                listBooks.ForEach(book => booksNoContenu.Add(LibraryService.ConvertToBookNoContenu(book)));
+                return booksNoContenu;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [Route("/api/[controller]/{id}")]
@@ -78,7 +89,7 @@ namespace ASP.Server.Api
         {
             try
             {
-                return LibraryService.ConvertToBookDto(this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id == id).FirstOrDefault());
+                return LibraryService.ConvertToBookDto(this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id == id).FirstOrDefault());
             }
             catch
             {

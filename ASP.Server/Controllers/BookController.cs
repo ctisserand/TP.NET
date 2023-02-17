@@ -18,7 +18,7 @@ namespace ASP.Server.Controllers
         public string Name { get; set; }
         public int Id { get; set; }
         public string Contenu { get; set; }
-        public string Auteur { get; set; }
+        public String Auteur { get; set; }
         public float Prix { get; set; }
 
         // Liste des genres séléctionné par l'utilisateur
@@ -40,7 +40,7 @@ namespace ASP.Server.Controllers
         public ActionResult<IEnumerable<Book>> List()
         {
             // récupérer les livres dans la base de donées pour qu'elle puisse être affiché
-            List<Book> ListBooks = this.libraryDbContext.Books.Include(b => b.Genres).ToList();
+            List<Book> ListBooks = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).ToList();
             return View(ListBooks);
         }
 
@@ -52,8 +52,16 @@ namespace ASP.Server.Controllers
                 // Il faut intéroger la base pour récupérer l'ensemble des objets genre qui correspond aux id dans CreateBookModel.Genres
                 List<Genre> genres = this.libraryDbContext.Genre.Where(x => book.GenresSelectionne.Contains(x.Id)).ToList();
                 // Completer la création du livre avec toute les information nécéssaire que vous aurez ajoutez, et metter la liste des gener récupéré de la base aussi
+                var trouve = this.libraryDbContext.Auteurs.Where(x => book.Auteur == x.Nom).ToList();
+                if (trouve.Count == 0)
+                {
+                    Auteur a = new Auteur() { Nom = book.Auteur };
+                    this.libraryDbContext.Add(a);
+                    this.libraryDbContext.SaveChanges();
+                    trouve.Add(a);
+                }
                 this.libraryDbContext.Add(new Book()
-                { Auteur = book.Auteur, Nom = book.Name, Prix = book.Prix, Contenu = book.Contenu, Genres = genres }
+                { Auteur = trouve[0], Nom = book.Name, Prix = book.Prix, Contenu = book.Contenu, Genres = genres }
                 );
                 this.libraryDbContext.SaveChanges();
                 return RedirectToAction("List");
@@ -66,9 +74,8 @@ namespace ASP.Server.Controllers
         }
         public ActionResult Edit(int Id)
         {
-            var book = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id == Id).First();
-
-            return View(new CreateBookModel() { Id = Id, Name = book.Nom, Auteur = book.Auteur, Prix = book.Prix, Contenu = book.Contenu, AllGenres = this.libraryDbContext.Genre.ToList() }); ;
+            var book = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id == Id).First();
+            return View(new CreateBookModel() { Id = Id, Name = book.Nom, Auteur=book.Auteur.Nom, Prix = book.Prix, Contenu = book.Contenu, AllGenres = this.libraryDbContext.Genre.ToList() }); ;
 
         }
         [HttpPost]
@@ -80,15 +87,22 @@ namespace ASP.Server.Controllers
                 // Il faut intéroger la base pour récupérer l'ensemble des objets genre qui correspond aux id dans CreateBookModel.Genres
                 List<Genre> genres = this.libraryDbContext.Genre.Where(x => book.GenresSelectionne.Contains(x.Id)).ToList();
                 // Completer la création du livre avec toute les information nécéssaire que vous aurez ajoutez, et metter la liste des gener récupéré de la base aussi
-                var bookEdit = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id == book.Id).First();
-                bookEdit.Auteur = book.Auteur;
+                var bookEdit = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id == book.Id).First();
+                var trouve = this.libraryDbContext.Auteurs.Where(x => book.Auteur == x.Nom).ToList();
+                if (trouve.Count == 0)
+                {
+                    Auteur a = new Auteur() { Nom = book.Auteur };
+                    this.libraryDbContext.Add(a);
+                    this.libraryDbContext.SaveChanges();
+                    trouve.Add(a);
+                }
+                bookEdit.Auteur = trouve[0];
                 bookEdit.Nom = book.Name;
                 bookEdit.Prix = book.Prix;
                 bookEdit.Contenu = book.Contenu;
                 bookEdit.Genres = genres;
                 this.libraryDbContext.Update(bookEdit);
                 this.libraryDbContext.SaveChanges();
-                
             }
 
 
@@ -98,7 +112,7 @@ namespace ASP.Server.Controllers
 
         public ActionResult Delete(int id)
         {
-            var book = this.libraryDbContext.Books.Include(b => b.Genres).Where(b => b.Id == id).First();
+            var book = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).Where(b => b.Id == id).First();
             this.libraryDbContext.Remove(book);
             this.libraryDbContext.SaveChanges();
             return RedirectToAction("List");
