@@ -1,10 +1,83 @@
-﻿@{
+﻿@using ASP.Server.Controllers
+@model StatisticModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-6 mb-5">Bienvenue dans notre application de gestion</h1>
+    <h2 class="display-8 mb-3">Statistiques de l'application</h2>
+
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total livre</h5>
+                    <p>@(Model.NbLivreTotal)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Max mots</h5>
+                    <p>@(Model.nbMaxMot)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Min mots</h5>
+                    <p>@(Model.nbMinMot)</p>
+                </div>
+            </div>        
+        </div>
+       
+    </div>
+    <div class="row mt-3">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                        Moyenne mot
+                        <p>@(Model.nbMoyenneMot)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                        Médiane mot
+                        <p>@(Model.nbMedianMot)</p>
+                </div>
+            </div>
+        </div>
+     </div>
+   
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Auteur</th>
+                <th scope="col">Nombre de livre</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+          @foreach (var value in Model.nbLivreAuteur)
+            {
+                <tr>
+                    <td>@(value.Key)</td>
+                    <td>@(value.Value)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
 </div>
 
 

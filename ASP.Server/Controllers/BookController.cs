@@ -37,11 +37,18 @@ namespace ASP.Server.Controllers
             this.libraryDbContext = libraryDbContext;
         }
 
-        public ActionResult<IEnumerable<Book>> List()
+        public ActionResult<List<Object>> List()
         {
             // récupérer les livres dans la base de donées pour qu'elle puisse être affiché
             List<Book> ListBooks = this.libraryDbContext.Books.Include(b => b.Genres).Include(b => b.Auteur).ToList();
-            return View(ListBooks);
+            var AllGenres = this.libraryDbContext.Genre.ToList();
+            var AllAuteurs = this.libraryDbContext.Auteurs.ToList();
+
+            List<Object> values = new List<Object>();
+            values.Add(ListBooks);
+            values.Add(AllGenres);
+            values.Add(AllAuteurs);
+            return View(values);
         }
 
         public ActionResult<CreateBookModel> Create(CreateBookModel book)

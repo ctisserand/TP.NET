@@ -1,19 +1,21 @@
 ﻿@using ASP.Server.Model
-@model IEnumerable<Book>
+@model List<Object>
 @{
     ViewData["Title"] = "Home Page";
 }
+
 
 <div class="listeBooks">
     <h1>Liste des livres:</h1>
     <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
     <ul>
-        @foreach (var book in Model)
+        @foreach (var book in (List<Book>)Model[0])
         {
             <li>
                 <ul>
                     Id :
-                    <a href="/Book/Edit/@(book.Id)">@(book.Id)</a>
+                    @(book.Id)
+                    <a href="/Book/Edit/@(book.Id)">(edit)</a>
                     <li>
                        Auteur : @(book.Auteur.Nom)
                     </li>
@@ -22,9 +24,6 @@
                     </li>
                     <li>
                        Prix : @(book.Prix)
-                    </li>
-                     <li>
-                       Contenu : @(book.Contenu)
                     </li>
                      <li>
                         Genres : [
@@ -41,6 +40,24 @@
             </li>
         }
     </ul>
-    
+    <!--@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+           
+                <div class="input-group">
+                    <div class="col-10">
+                        @Html.DropDownList("GenresSelectionne", new  MultiSelectList((List<Genre>)Model[1],"Id","Nom"),new { @class = "form-control multiple" ,multiple="multiple"})
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+    }-->
 </div>
 

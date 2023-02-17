@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ASP.Server.Api;
 using ASP.Server.Model;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace ASP.Server.Service
@@ -37,6 +38,40 @@ namespace ASP.Server.Service
         public static GenreDto ConvertToGenreDto(Genre genre)
         {
             return new GenreDto { Id = genre.Id, Nom = genre.Nom};
+        }
+        public static int wordCount(string text)
+        {
+            int wordCount = 0, index = 0;
+
+            // skip whitespace until first word
+            while (index < text.Length && char.IsWhiteSpace(text[index]))
+                index++;
+
+            while (index < text.Length)
+            {
+                // check if current char is part of a word
+                while (index < text.Length && !char.IsWhiteSpace(text[index]))
+                    index++;
+
+                wordCount++;
+
+                // skip whitespace until next word
+                while (index < text.Length && char.IsWhiteSpace(text[index]))
+                    index++;
+            }
+            return wordCount;
+        }
+        public static double Median(List<string> items)
+        {
+            List<int> tailleByContenu = new List<int>();
+            foreach (string i in items)
+            {
+                tailleByContenu.Add(wordCount(i));
+            }
+            var data = tailleByContenu.OrderBy(n => n).ToArray();
+            if (data.Length % 2 == 0)
+                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0;
+            return data[data.Length / 2];
         }
 
     }
