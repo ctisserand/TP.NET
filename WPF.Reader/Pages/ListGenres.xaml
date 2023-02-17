@@ -11,57 +11,46 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ListGenres">
     <StackPanel>
-        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px">Liste des Genres</Label>
-        <Grid Margin="10">
-            <ListBox Name="lbListGenres" ItemsSource="{Binding Genres}" HorizontalContentAlignment="Stretch">
-                <ListBox.ItemTemplate>
-                    <DataTemplate >
-                        <Grid Margin="0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="100" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Nom}" />
-                            <Button Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" CommandParameter="{Binding .}" Width="200" Content="Afficher livres de ce genre" HorizontalAlignment="Right"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px" Foreground="#ff8b3d">Liste des Genres</Label>
+        <Grid Margin="50 0">
+            <ScrollViewer>
+                <ListView ItemsSource="{Binding Genres}">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Liste des genres">
+                            <GridViewColumn DisplayMemberBinding="{Binding Nom}" Header="Genre" Width="Auto"/>
+                            <GridViewColumn Width="Auto" Header="Afficher les livres de ce genre">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" CommandParameter="{Binding .}" Content="Afficher livres du genre" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </ScrollViewer>
         </Grid>
         <Grid Margin="10">
-            <ListBox Name="lbListBooksByGenre" ItemsSource="{Binding BooksByGenre}" HorizontalContentAlignment="Stretch" >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="100" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock>
-                                <Run Text="Nom: "/><Run Text="{Binding Nom}"/>
-                                <Run Text=", Auteur: "/><Run Text="{Binding Auteur}"/>
-                                <Run Text=", Prix: "/><Run Text="{Binding Prix}"/>
-                                <Run Text=", Genre(s): "/><Run Text="{Binding GenresToString}"/>
-                            </TextBlock>
-                            <Button Command="{Binding Path=DetailsBook}" CommandParameter="{Binding .}" Width="100" Content="Détails du livre" HorizontalAlignment="Right"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ScrollViewer>
+                <ListView ItemsSource="{Binding BooksByGenre}">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Liste des livres par genre">
+                            <GridViewColumn DisplayMemberBinding="{Binding Nom}" Header="Titre" Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Auteur}" Header="Auteur" Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Prix}" Header="Prix en €" Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding GenresToString}" Header="Genres" Width="Auto"/>
+                            <GridViewColumn Width="Auto" Header="Détails">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding Path=DetailsBook}" CommandParameter="{Binding .}" Content="Détails du livre" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </ScrollViewer>
         </Grid>
-        <!-- 
-            A vous de créer la liste avec le bon binding. Une <ListBox> fera l'affaire 
-            La propriété ItemsSource doit pointé vers la propiété Books de votre dataContext actuelle 
-            Utilisé ListBox.ItemTemplate pour définir comment sont affiché vos items
-            <ListBox.ItemTemplate>
-        
-            A vous de faire afficher les champs que vous voulez afficher pour savoir quel sont les livre disponible
-            <TextBlock Text="{Binding MyPropertyOnMyObjectBook}"/>
-            N'oublier pas non plus de rajouter un boutton quelque part pour allez voir les détails de votre livre
-            Les propriété Command et CommandParameter pourrons vous aider ! 
-            Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" 
-            CommandParameter="{Binding .}"
-        -->
     </StackPanel>
 </Page>
 

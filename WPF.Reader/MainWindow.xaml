@@ -13,7 +13,7 @@
     </Window.Resources>
     <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right" >
-            <Button Command="{Binding Path=GoToHome}" Width="100" Content="Accueil" Background="#600000FF" FontWeight="Bold"/>
+            <Button Command="{Binding Path=GoToHome}" Width="150" Content="Accueil" Background="#600000FF" FontWeight="Bold" FontSize="20"/>
         </StackPanel>
         <ContentPresenter  Content="{Binding Path=Frame}" x:Name="Navigation"/>
     </DockPanel>

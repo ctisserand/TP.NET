@@ -10,21 +10,34 @@
       d:DataContext="{d:DesignInstance Type=vm:InDesignDetailsBook, d:IsDesignTimeCreatable=True}"
       Title="DetailsBook">
     <StackPanel>
-        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px">
-            <Run Text="Détail du livre: "/>
-            <Run Text="{Binding CurrentBook.Nom}"/>
-        </TextBlock>
-        <ListView HorizontalAlignment="Center">
-            <TextBlock>
-                <Run Text="Nom: "/><Run Text="{Binding CurrentBook.Nom}"/>
-                <Run Text=", Auteur: "/><Run Text="{Binding CurrentBook.Auteur}"/>
-                <Run Text=", Prix: "/><Run Text="{Binding CurrentBook.Prix}"/>
-                <Run Text=", Genre(s): "/><Run Text="{Binding CurrentBook.GenresToString}"/>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" Margin="0 20" Grid.Row="1" FontWeight="Bold">
+                <Run Text="Détail du livre: "/>
+                <Run Text="{Binding CurrentBook.Nom}" TextDecorations="Underline" Foreground="Blue"/>
             </TextBlock>
-            <Button Command="{Binding Path=CurrentBook.GoToReadBook}" CommandParameter="{Binding CurrentBook}" Width="200" Content="Lire ce livre" HorizontalAlignment="Right"/>
-        </ListView>
+            <StackPanel HorizontalAlignment="Center" Grid.Row="2">
+                <TextBlock FontWeight="Bold">
+                    <Run Foreground="Purple" Text="Nom: "/><Run Text="{Binding CurrentBook.Nom}"/>
+                </TextBlock>
+                <TextBlock FontWeight="Bold">
+                    <Run Foreground="Purple" Text="Auteur: "/><Run Text="{Binding CurrentBook.Auteur}"/>
+                </TextBlock>
+                <TextBlock FontWeight="Bold">
+                    <Run Foreground="Purple" Text="Prix: "/><Run Text="{Binding CurrentBook.Prix}"/>
+                </TextBlock>
+                <TextBlock FontWeight="Bold">
+                    <Run Foreground="Purple" Text="Genres: "/><Run Text="{Binding CurrentBook.GenresToString}"/>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" Grid.Row="3" Margin="0 20">
+                <Button Command="{Binding Path=CurrentBook.GoToReadBook}" CommandParameter="{Binding CurrentBook}" Width="200" Content="Lire ce livre" Background="#DDA0DD" FontSize="20"/>
+            </StackPanel>
+        </Grid>
     </StackPanel>
-    <!-- il faut afficher les information du livre: Nom, Auteur, Prix, Genres-->
-        <!-- Mais pas le contenu ! -->
-        <!-- N'oublier pas le bouton pour aller lire le livre. La commande ReadCommand est faite pour ca ! -->
 </Page>

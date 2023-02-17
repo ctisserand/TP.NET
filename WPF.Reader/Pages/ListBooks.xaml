@@ -10,26 +10,27 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ListBooks">
-    <Grid VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <Label Grid.Row="1" Content="Liste des livres" VerticalAlignment="Top" FontSize="40px" FontWeight="Bold" Foreground="#ff8b3d" Margin="10 0 0 30"/>
-        <ScrollViewer Grid.Row="2">
-            <ListView Name="lvBooks" ItemsSource="{Binding Books}">
-                <ListView.ItemTemplate>
-				    <DataTemplate>
-					    <WrapPanel>
-						    <TextBlock Text="Titre:  " />
-						    <TextBlock Text="{Binding Nom}" FontWeight="Bold" />
-                            <Button Command="{Binding Path=DetailsBook}" CommandParameter="{Binding .}" Width="100" Content="Détails du livre" HorizontalAlignment="Right" Margin="100 0 0 0"/>
-                        </WrapPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </ScrollViewer>
-    </Grid>
+    <StackPanel>
+        <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px" Foreground="#ff8b3d">Liste des Livres</Label>
+        <Grid Margin="10">
+                <ListView ItemsSource="{Binding Books}">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Liste des livres">
+                            <GridViewColumn DisplayMemberBinding="{Binding Nom}" Header="Titre" Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Auteur}" Header="Auteur" Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Prix}" Header="Prix en €" Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding GenresToString}" Header="Genres" Width="Auto"/>
+                            <GridViewColumn Width="Auto" Header="Détails">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding Path=DetailsBook}" CommandParameter="{Binding .}" Content="Détails du livre" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+        </Grid>
+    </StackPanel>
 </Page>
 

@@ -20,9 +20,9 @@
         </Grid.RowDefinitions>
         <!-- On aimerais bien avoir le tire du livre en entête -->
 
-        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="30px" Margin="10,8,0,0">
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Margin="10,8,0,0">
             <Run Text="Vous lisez: "/>
-            <Run Text="{Binding CurrentBook.Nom}"/>
+            <Run Text="{Binding CurrentBook.Nom}" TextDecorations="Underline" Foreground="Blue"/>
         </TextBlock>
         <!-- Ainsi que le contenu du livre ! -->
         <TextBox Margin="10,0,10,19"  Name="tbMultiLine"
@@ -30,7 +30,7 @@
                       AcceptsReturn="True"
                       VerticalScrollBarVisibility="Visible"
                      IsReadOnly="true"
-                     Text="{Binding CurrentBook.Contenu}" FontWeight="Bold" Grid.Row="1" />
+                     Text="{Binding CurrentBook.Contenu}" FontWeight="Bold" Grid.Row="1" Padding="10 10"/>
         <Button Width="200" Command="{Binding Path=GoBack, Source={StaticResource ResourceKey=navigator}}" CommandParameter="LIST" Content="Retourner aux détails" HorizontalAlignment="Center" Grid.Row="2" Margin="0,0,10,48"/>
     </Grid>
 </Page>
