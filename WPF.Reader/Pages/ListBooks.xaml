@@ -13,24 +13,37 @@
     <StackPanel>
         <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px" Foreground="#ff8b3d">Liste des Livres</Label>
         <Grid Margin="10">
-                <ListView ItemsSource="{Binding Books}">
-                    <ListView.View>
-                        <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Liste des livres">
-                            <GridViewColumn DisplayMemberBinding="{Binding Nom}" Header="Titre" Width="Auto"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding Auteur}" Header="Auteur" Width="Auto"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding Prix}" Header="Prix en €" Width="Auto"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding GenresToString}" Header="Genres" Width="Auto"/>
-                            <GridViewColumn Width="Auto" Header="Détails">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Command="{Binding Path=DetailsBook}" CommandParameter="{Binding .}" Content="Détails du livre" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+            <ListView ItemsSource="{Binding Books}">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Liste des livres">
+                        <GridViewColumn DisplayMemberBinding="{Binding Nom}" Header="Titre" Width="Auto"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Auteur}" Header="Auteur" Width="Auto"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Prix}" Header="Prix en €" Width="Auto"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding GenresToString}" Header="Genres" Width="Auto"/>
+                        <GridViewColumn Width="Auto" Header="Détails">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Command="{Binding Path=DetailsBook}" CommandParameter="{Binding .}" Content="Détails du livre" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,5">
+            <!--<Button Margin="4,0" Content="&lt;&lt;" Command="" Width="25"/>-->
+            <Button Margin="4,0,10,0" Content="&lt;" Command="{Binding PreviousBooks}" Width="25"/>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Text="{Binding Offset}"/>
+                <TextBlock Text=" à "/>
+                <TextBlock Text="{Binding End}"/>
+                <TextBlock Text=" sur "/>
+                <TextBlock Text="{Binding NbBooks}"/>
+            </StackPanel>
+            <Button Margin="10,0,4,0" Content="&gt;" Command="{Binding NextBooks}" Width="25"/>
+            <!--<Button Margin="4,0" Content="&gt;&gt;" Command="" Width="25"/>-->
+        </StackPanel>
     </StackPanel>
 </Page>
 

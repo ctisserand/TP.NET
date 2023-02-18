@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Runtime.InteropServices;
 using System.Windows;
 using WPF.Reader.Api;
 using WPF.Reader.Model;
@@ -62,9 +63,9 @@ namespace WPF.Reader.Service
 
         public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
 
-        public async void SearchAllBooks()
+        public async void SearchAllBooks(int offset, int limit)
         {
-            List<BookNoContenu> books = await new BookApi().BookGetBooksAsync();
+            List<BookNoContenu> books = await new BookApi().BookGetBooksAsync(null,offset,limit);
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Books.Clear();
@@ -84,6 +85,11 @@ namespace WPF.Reader.Service
                 }
             });
         }
+        public int CounthAllBooks()
+        {
+            return new BookApi().BookGetBooksAsync().Result.Count;
+        }
+
 
         public BookDto GetBookById(Book book)
         {
