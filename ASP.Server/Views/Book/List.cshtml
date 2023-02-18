@@ -8,56 +8,44 @@
 <div class="listeBooks">
     <h1>Liste des livres:</h1>
     <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
-    <ul>
-        @foreach (var book in (List<Book>)Model[0])
-        {
-            <li>
-                <ul>
-                    Id :
-                    @(book.Id)
-                    <a href="/Book/Edit/@(book.Id)">(edit)</a>
-                    <li>
-                       Auteur : @(book.Auteur.Nom)
-                    </li>
-                    <li>
-                        Nom : @(book.Nom)
-                    </li>
-                    <li>
-                       Prix : @(book.Prix)
-                    </li>
-                     <li>
-                        Genres : [
-                                @foreach (var genre in book.Genres)
+
+    <table id="example" class="table" data-search="true">
+        <thead>
+            <tr>
+                <th scope="col" data-filter-control="input" data-sortable="true">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Auteur</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Genre(s)</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var book in (List<Book>)Model[0])
+            {
+                    <tr>
+                    <td>
+                        @(book.Id)
+                    </td>
+                        <td>@(book.Nom)</td>
+                    <td>@(book.Auteur.Nom)</td>
+
+                    <td>@(book.Prix)</td>
+                    <td>
+                    @foreach (var genre in book.Genres)
                         {
                             <span>@(genre.Nom),</span>
                         }
-                        ]
-                    </li>
-                    <li>
-                        <a href="/Book/Delete/@(book.Id)"><p style="color:red">Supprimer livre</p></a>
-                    </li>
-                </ul>
-            </li>
-        }
-    </ul>
-    <!--@using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+                    </td>
+                    <td>
 
-        <div class="form-horizontal">
-           
-                <div class="input-group">
-                    <div class="col-10">
-                        @Html.DropDownList("GenresSelectionne", new  MultiSelectList((List<Genre>)Model[1],"Id","Nom"),new { @class = "form-control multiple" ,multiple="multiple"})
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
-    }-->
+                        <button onclick="window.location.href='/Book/Edit/@(book.Id)';"  type="button" class="btn btn-primary">Edit</button>
+                        <button type="button"  onclick="window.location.href='/Book/Delete/@(book.Id)';" class="btn btn-danger">Supprimer</button>
+                    </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
 </div>
 

@@ -8,27 +8,36 @@
 <div class="listeGenres">
     <h1>Liste des Genres:</h1>
     <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
-    <ul>
-        @foreach (var genre in Model)
-        {
-            <li>
-                <ul>
-                    Id : @(genre.Id)
-                    <li>
-                        Nom : @(genre.Nom)
-                    </li>
-                    <li>
-                        Livres : [
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" >Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Titre des livre(s)</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var genre in Model)
+            {
+                <tr>
+                    <td>
+                        @(genre.Id)
+                    </td>
+                    <td>@(genre.Nom)</td>
+                    <td>
                         @foreach (var book in genre.Livres)
                         {
-                            <span>@(book.Nom),</span>
+                                    <span>@(book.Nom),</span>
                         }
-                        ]
-                    </li>
-                </ul>
-            </li>
-        }
-    </ul>
+                    </td>
+               
+                </tr>
+            }
+        </tbody>
+    </table>
+
 </div>
 
 
