@@ -19,7 +19,7 @@
                         <GridViewColumn DisplayMemberBinding="{Binding Nom}" Header="Titre" Width="Auto"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Auteur}" Header="Auteur" Width="Auto"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Prix}" Header="Prix en €" Width="Auto"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding GenresToString}" Header="Genres" Width="Auto"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding GenresToString}" Header="Genres" Width="200"/>
                         <GridViewColumn Width="Auto" Header="Détails">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -32,8 +32,8 @@
             </ListView>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,5">
-            <!--<Button Margin="4,0" Content="&lt;&lt;" Command="" Width="25"/>-->
-            <Button Margin="4,0,10,0" Content="&lt;" Command="{Binding PreviousBooks}" Width="25"/>
+            <Button Margin="4,0" Content="&lt;&lt;" Command="{Binding FirstBooks}" Width="25" IsEnabled="{Binding FirstIsEnabled}" ToolTip="Première page"/>
+            <Button Margin="4,0,10,0" Content="&lt;" Command="{Binding PreviousBooks}" Width="25" IsEnabled="{Binding PreviousIsEnabled}" ToolTip="Page précédente"/>
             <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                 <TextBlock Text="{Binding Offset}"/>
                 <TextBlock Text=" à "/>
@@ -41,8 +41,8 @@
                 <TextBlock Text=" sur "/>
                 <TextBlock Text="{Binding NbBooks}"/>
             </StackPanel>
-            <Button Margin="10,0,4,0" Content="&gt;" Command="{Binding NextBooks}" Width="25"/>
-            <!--<Button Margin="4,0" Content="&gt;&gt;" Command="" Width="25"/>-->
+            <Button Margin="10,0,4,0" Content="&gt;" Command="{Binding NextBooks}" Width="25" IsEnabled="{Binding NextIsEnabled}" ToolTip="Page suivante"/>
+            <Button Margin="4,0" Content="&gt;&gt;" Command="{Binding LastBooks}" Width="25" IsEnabled="{Binding LastIsEnabled}" ToolTip="Dernière page"/>
         </StackPanel>
     </StackPanel>
 </Page>

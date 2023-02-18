@@ -14,27 +14,30 @@ namespace WPF.Reader.ViewModel
         public ICommand ItemSelectedCommand { get; set; }
         public ICommand PreviousBooks { get; set; }
         public ICommand NextBooks { get; set; }
+        public ICommand FirstBooks { get; set; }
+        public ICommand LastBooks { get; set; }
+
         public int Offset { get; set; } = 1;
         public int Limit { get; set; } = 2;
         public int End { get; set; } = 1;
         public int NbBooks { get; set; } = 0;
+        public bool PreviousIsEnabled { get; set; } = true;
+        public bool NextIsEnabled { get; set; } = true;
+        public bool FirstIsEnabled { get; set; } = true;
+        public bool LastIsEnabled { get; set; } = true;
 
         public void IncreaseOffset() 
         {
-            if (Offset+Limit <= NbBooks)
+            if (Offset + Limit <= NbBooks)
             {
-                Offset = Offset + Limit;
+                Offset += Limit;
             }
         }
         public void DecreaseOffset()
         {
             if (Offset - Limit>0) 
             {
-                Offset = Offset - Limit;
-            }
-            else
-            {
-                Offset = 1;
+                Offset -= Limit;
             }
         }
         public void CombienAffiches()
@@ -48,6 +51,38 @@ namespace WPF.Reader.ViewModel
                 End = NbBooks;
             }
         }
+        public void EnabledButton()
+        {
+            if (Offset - Limit < 0)
+            {
+                PreviousIsEnabled = false;
+                FirstIsEnabled = false;
+            }
+            else
+            {
+                PreviousIsEnabled = true;
+                FirstIsEnabled = true;
+            }
+            if (Offset + Limit > NbBooks)
+            {
+                NextIsEnabled = false;
+                LastIsEnabled = false;
+            }
+            else
+            {
+                NextIsEnabled = true;
+                LastIsEnabled = true;
+            }
+        }
+        public void RunSearchAllBooks()
+        {
+            CombienAffiches();
+            Task.Run(() =>
+            {
+                Ioc.Default.GetRequiredService<LibraryService>().SearchAllBooks(Offset, Limit);
+            });
+            EnabledButton();
+        }
 
         public void CountBooks() { NbBooks = Ioc.Default.GetRequiredService<LibraryService>().CounthAllBooks(); }
         public ObservableCollection<Book> AllBooks => Ioc.Default.GetRequiredService<LibraryService>().Books;
@@ -55,30 +90,22 @@ namespace WPF.Reader.ViewModel
         public ListBook()
         {
             CountBooks();
-            CombienAffiches();
-            Task.Run(() =>
-            {
-                Ioc.Default.GetRequiredService<LibraryService>().SearchAllBooks(Offset,Limit);
-            });
-            PreviousBooks = new RelayCommand(o => {
+            RunSearchAllBooks();
+            PreviousBooks = new RelayCommand(x => {
                 DecreaseOffset();
-                CombienAffiches();
-                Task.Run(() =>
-                {
-                    Ioc.Default.GetRequiredService<LibraryService>().SearchAllBooks(Offset, Limit);
-                });
+                RunSearchAllBooks();
             });
-            NextBooks = new RelayCommand(o => {
+            NextBooks = new RelayCommand(x => {
                 IncreaseOffset();
-                CombienAffiches();
-                Task.Run(() =>
-                {
-                    Ioc.Default.GetRequiredService<LibraryService>().SearchAllBooks(Offset, Limit);
-                });
+                RunSearchAllBooks();
             });
-
-            ItemSelectedCommand = new RelayCommand(book => { 
-                /* the livre devrais etre dans la variable book */ 
+            FirstBooks = new RelayCommand(x => {
+                Offset=1;
+                RunSearchAllBooks();
+            });
+            LastBooks = new RelayCommand(x => {
+                Offset= NbBooks-Limit+1;
+                RunSearchAllBooks();
             });
         }
     }
