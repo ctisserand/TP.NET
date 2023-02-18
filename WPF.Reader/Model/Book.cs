@@ -19,9 +19,10 @@ namespace WPF.Reader.Model
         public void GenresInString()
         {
             GenresToString = "";
-            foreach (GenreDto g in Genres)
+            for (int i=0; i< Genres.Count; i++)
             {
-                GenresToString += g.Nom+ " - ";
+                if (i != Genres.Count-1) GenresToString += Genres[i].Nom + " ; ";
+                else GenresToString += Genres[i].Nom;
             }
         }
         public ICommand GoToReadBook { get; init; } = new RelayCommand(x => {
