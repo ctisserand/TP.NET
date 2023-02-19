@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WPF.Reader.Model;
 using WPF.Reader.Service;
+using System.Speech.Synthesis;
 
 namespace WPF.Reader.ViewModel
 {
@@ -24,7 +25,7 @@ namespace WPF.Reader.ViewModel
     /* Cette classe sert juste a afficher des donnée de test dans le designer */
     class InDesignReadBook : ReadBook
     {
-        public InDesignReadBook() : base(new Book() /*{ Title = "Test Book" }*/) { }
+        public InDesignReadBook() : base(new Book() /*{ Title = "Test Book" }*/ ) { }
 
     }
 }
