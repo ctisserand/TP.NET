@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,42 +24,75 @@ namespace WPF.Reader.Pages
     /// </summary>
     public partial class ReadBook : Page
     {
-        SpeechSynthesizer synth = new SpeechSynthesizer();
+        SpeechSynthesizer synth;
         public bool IsPauseValue { get; set; } = false;
         public bool IsFirstTimePlayed { get; set; } = true;
         public ReadBook()
         {
             InitializeComponent();
+            btnStop.IsEnabled = false;
         }
 
         private void PauseOrResume(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if(IsFirstTimePlayed)
+            if (IsFirstTimePlayed)
             {
-                var content = button.CommandParameter;
-                this.synth.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
-                synth.SpeakAsync((string)content);
+                synth = new SpeechSynthesizer();
+                synth.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
+                synth.SpeakAsync((string)btnplayorresume.CommandParameter);
                 IsFirstTimePlayed = false;
                 IsPauseValue = !IsPauseValue;
-                button.Content = "⏸︎ Pause";
-                button.Background = new SolidColorBrush(Color.FromArgb(255, 255, 64, 102));
+                btnplayorresume.Content = "⏸︎ Pause";
+                btnplayorresume.Background = new SolidColorBrush(Color.FromArgb(255, 255, 64, 102));
+                btnStop.IsEnabled = true;
                 return;
             }
             if (IsPauseValue)
             {
                 synth.Pause();
                 IsPauseValue = !IsPauseValue;
-                button.Content = "▶ Play";
-                button.Background = new SolidColorBrush(Color.FromArgb(255, 127, 255, 0));
+                btnplayorresume.Content = "▶ Play";
+                btnplayorresume.Background = new SolidColorBrush(Color.FromArgb(255, 127, 255, 0));
             }
             else
             {
                 synth.Resume();
                 IsPauseValue = !IsPauseValue;
-                button.Content = "⏸︎ Pause";
-                button.Background = new SolidColorBrush(Color.FromArgb(255, 255, 64, 102));
+                btnplayorresume.Content = "⏸︎ Pause";
+                btnplayorresume.Background = new SolidColorBrush(Color.FromArgb(255, 255, 64, 102));
             }
+        }
+
+        private void PlaySelection_Click(object sender, RoutedEventArgs e)
+        {
+            if (Livre.SelectionLength > 0)
+            {
+                PlaySelectedText(Livre.SelectedText.ToString());
+            }
+        }
+
+        private void PlaySelectedText(string selectedTxt)
+        {
+            if (synth != null)
+            {
+                synth.Dispose();
+            }
+            synth = new SpeechSynthesizer();
+            synth.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
+            btnStop.IsEnabled = true;
+            synth.SpeakAsync(selectedTxt);
+        }
+        private void Stop(object sender, RoutedEventArgs e)
+        {
+            if (synth != null)
+            {
+                synth.Dispose();
+            }
+            btnStop.IsEnabled = false;
+            IsFirstTimePlayed = true;
+            IsPauseValue = !IsPauseValue;
+            btnplayorresume.Content = "▶ Play";
+            btnplayorresume.Background = new SolidColorBrush(Color.FromArgb(255, 127, 255, 0));
         }
     }
 }

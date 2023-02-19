@@ -16,7 +16,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="80" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <!-- On aimerais bien avoir le tire du livre en entête -->
 
@@ -25,12 +26,23 @@
             <Run Text="{Binding CurrentBook.Nom}" TextDecorations="Underline" Foreground="Blue"/>
         </TextBlock>
         <!-- Ainsi que le contenu du livre ! -->
-        <TextBox Margin="10,0,10,15"  Name="tbMultiLine" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+        <TextBox x:Name="Livre" Margin="10,0,10,15" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
                      IsReadOnly="true" Text="{Binding CurrentBook.Contenu}" FontWeight="Bold" Grid.Row="1" Padding="10 10"/>
 
         <StackPanel Grid.Row="2">
-            <Button Width="200" Click="PauseOrResume" CommandParameter="{Binding CurrentBook.Contenu}" Content="▶ Play" HorizontalAlignment="Center" Background="#7FFF00" FontWeight="Bold" FontSize="20"/>
-            <Button Width="200" Command="{Binding Path=GoBack, Source={StaticResource ResourceKey=navigator}}" CommandParameter="LIST" Content="Retourner aux détails" Margin="0,20,0,0"/>
+            <Grid HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+                <Button Click="PauseOrResume" x:Name="btnplayorresume" CommandParameter="{Binding CurrentBook.Contenu}" Content="▶ Play" Background="#7FFF00" FontWeight="Bold" FontSize="20" Grid.Column="0"/>
+                <Button Click="Stop" x:Name="btnStop" CommandParameter="{Binding CurrentBook.Contenu}" Content="⏹ Stop" Background="#800000" FontWeight="Bold" FontSize="20" Grid.Column="1" Margin="10 0 10 0"/>
+                <Button Content="Play Sélection" x:Name="btnplayselection" FontWeight="Bold" FontSize="20" Click="PlaySelection_Click" Grid.Column="2"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="4">
+            <Button Width="150" CommandParameter="LIST" Content="Retourner aux détails" Margin="0,10,0,0" Grid.Column="2" Background="#f7f5bc"/>
         </StackPanel>
     </Grid>
 </Page>
