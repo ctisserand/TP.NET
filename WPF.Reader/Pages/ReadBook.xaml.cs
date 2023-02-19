@@ -1,21 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Speech.Synthesis;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WPF.Reader.Pages
 {
@@ -24,75 +10,178 @@ namespace WPF.Reader.Pages
     /// </summary>
     public partial class ReadBook : Page
     {
-        SpeechSynthesizer synth;
-        public bool IsPauseValue { get; set; } = false;
-        public bool IsFirstTimePlayed { get; set; } = true;
+        private SpeechSynthesizer? synthsizer;
+
         public ReadBook()
         {
             InitializeComponent();
-            btnStop.IsEnabled = false;
+
+            this.synthsizer = null;
         }
 
-        private void PauseOrResume(object sender, RoutedEventArgs e)
+        private void InitializeEnabledState()
         {
-            if (IsFirstTimePlayed)
+            this.btnsay.IsEnabled = true;
+            this.btnpause.IsEnabled = false;
+            this.btnstop.IsEnabled = true;
+            this.btnplayselection.IsEnabled = false;
+        }
+
+        private void InitializeSynthsizer()
+        {
+            this.synthsizer = new SpeechSynthesizer();
+            this.synthsizer.StateChanged += Synthsizer_StateChanged;
+            this.synthsizer.SpeakCompleted += Synthsizer_SpeakCompleted;
+            this.synthsizer.SpeakProgress += Synthsizer_SpeakProgress;
+            this.synthsizer.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
+        }
+
+        private void Synthsizer_StateChanged(object? sender, StateChangedEventArgs e)
+        {
+            switch (e.State)
             {
-                synth = new SpeechSynthesizer();
-                synth.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
-                synth.SpeakAsync((string)btnplayorresume.CommandParameter);
-                IsFirstTimePlayed = false;
-                IsPauseValue = !IsPauseValue;
-                btnplayorresume.Content = "⏸︎ Pause";
-                btnplayorresume.Background = new SolidColorBrush(Color.FromArgb(255, 255, 64, 102));
-                btnStop.IsEnabled = true;
-                return;
+                case SynthesizerState.Paused:
+                    if (this.synthsizer != null)
+                    {
+                        this.synthsizer.Pause();
+                    }
+                    break;
             }
-            if (IsPauseValue)
+        }
+
+        private void Synthsizer_SpeakCompleted(object? sender, SpeakCompletedEventArgs e)
+        {
+            if (this.synthsizer != null)
             {
-                synth.Pause();
-                IsPauseValue = !IsPauseValue;
-                btnplayorresume.Content = "▶ Play";
-                btnplayorresume.Background = new SolidColorBrush(Color.FromArgb(255, 127, 255, 0));
+                this.synthsizer.Dispose();
+                this.synthsizer = null;
+            }
+
+            this.btnpause.Content = "⏸︎ Pause";
+            this.btnsay.IsEnabled = true;
+            this.Livre.IsInactiveSelectionHighlightEnabled = false;
+
+            if (this.Livre.SelectedText.Length > 0)
+                this.btnplayselection.IsEnabled = true;
+            else
+                this.btnplayselection.IsEnabled = false;
+        }
+
+        private void Synthsizer_SpeakProgress(object? sender, SpeakProgressEventArgs e)
+        {
+
+            if (btnplayselection.IsEnabled == false)
+            {
+                this.Livre.Focus();
+                this.Livre.Select(e.CharacterPosition, e.Text.Length);
             }
             else
             {
-                synth.Resume();
-                IsPauseValue = !IsPauseValue;
-                btnplayorresume.Content = "⏸︎ Pause";
-                btnplayorresume.Background = new SolidColorBrush(Color.FromArgb(255, 255, 64, 102));
+                this.Livre.Focus();
+                this.Livre.Select(this.Livre.SelectionStart, this.Livre.SelectionLength);
             }
         }
 
-        private void PlaySelection_Click(object sender, RoutedEventArgs e)
+        private void Btnsay_Click(object sender, RoutedEventArgs e)
         {
-            if (Livre.SelectionLength > 0)
+            if (synthsizer != null)
             {
-                PlaySelectedText(Livre.SelectedText.ToString());
+                synthsizer.Dispose();
+            }
+
+            if (Livre.Text.ToString().Trim().Length == 0)
+            {
+                MessageBox.Show("Sélectionnez du texte");
+                return;
+            }
+
+            InitializeSynthsizer();
+
+            if (synthsizer != null)
+            {
+                synthsizer.SpeakAsync(this.Livre.Text);
+            }
+
+            this.btnpause.IsEnabled = true;
+            this.btnplayselection.IsEnabled = false;
+        }
+
+        private void Btnpause_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnpause.Content.ToString() == "⏸︎ Pause")
+            {
+                if (this.synthsizer != null)
+                {
+                    this.btnsay.IsEnabled = false;
+                    this.synthsizer.Pause();
+                    this.btnpause.Content = "▶ Resume";
+                }
+            }
+            else if (btnpause.Content.ToString() == "▶ Resume")
+            {
+                if (this.synthsizer != null)
+                {
+                    this.btnsay.IsEnabled = true;
+                    this.synthsizer.Resume();
+                    this.btnpause.Content = "⏸︎ Pause";
+                }
+            }
+        }
+
+        private void Btnplayselection_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Livre.SelectionLength > 0)
+            {
+                PlaySelectedText(this.Livre.SelectedText.ToString());
             }
         }
 
         private void PlaySelectedText(string selectedTxt)
         {
-            if (synth != null)
+            if (synthsizer != null)
             {
-                synth.Dispose();
+                synthsizer.Dispose();
+                synthsizer = null;
             }
-            synth = new SpeechSynthesizer();
-            synth.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
-            btnStop.IsEnabled = true;
-            synth.SpeakAsync(selectedTxt);
+            InitializeSynthsizer();
+            this.synthsizer.SpeakAsync(selectedTxt);
         }
-        private void Stop(object sender, RoutedEventArgs e)
+
+        private void Btnstop_Click(object sender, RoutedEventArgs e)
         {
-            if (synth != null)
+
+            this.btnpause.Content = "⏸︎ Pause";
+            this.btnpause.IsEnabled = false;
+            this.btnsay.IsEnabled = true;
+            this.Livre.IsInactiveSelectionHighlightEnabled = false;
+            this.btnplayselection.IsEnabled = false;
+            this.Livre.SelectionLength = 0;
+            this.Livre.SelectionStart = 0;
+
+            if (this.synthsizer != null)
             {
-                synth.Dispose();
+                this.synthsizer.Dispose();
+                this.synthsizer = null;
             }
-            btnStop.IsEnabled = false;
-            IsFirstTimePlayed = true;
-            IsPauseValue = !IsPauseValue;
-            btnplayorresume.Content = "▶ Play";
-            btnplayorresume.Background = new SolidColorBrush(Color.FromArgb(255, 127, 255, 0));
+        }
+
+        private void LivrePreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (this.synthsizer == null)
+            {
+                if (this.Livre.SelectedText.Length > 0)
+                {
+                    btnplayselection.IsEnabled = true;
+                }
+                else
+                {
+                    btnplayselection.IsEnabled = false;
+                }
+            }
+            else
+            {
+                btnplayselection.IsEnabled = false;
+            }
         }
     }
 }

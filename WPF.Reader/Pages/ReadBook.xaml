@@ -27,22 +27,24 @@
         </TextBlock>
         <!-- Ainsi que le contenu du livre ! -->
         <TextBox x:Name="Livre" Margin="10,0,10,15" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
-                     IsReadOnly="true" Text="{Binding CurrentBook.Contenu}" FontWeight="Bold" Grid.Row="1" Padding="10 10"/>
+         PreviewMouseUp="LivrePreviewMouseUp" IsReadOnly="true" Text="{Binding CurrentBook.Contenu}" FontWeight="Bold" Grid.Row="1" Padding="10 10"/>
 
-        <StackPanel Grid.Row="2">
+        <StackPanel Grid.Row="2" Margin="10,0,0,0">
             <Grid HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="170" />
+                <ColumnDefinition Width="170" />
+                <ColumnDefinition Width="170" />
+                <ColumnDefinition Width="170" />
             </Grid.ColumnDefinitions>
-                <Button Click="PauseOrResume" x:Name="btnplayorresume" CommandParameter="{Binding CurrentBook.Contenu}" Content="▶ Play" Background="#7FFF00" FontWeight="Bold" FontSize="20" Grid.Column="0"/>
-                <Button Click="Stop" x:Name="btnStop" CommandParameter="{Binding CurrentBook.Contenu}" Content="⏹ Stop" Background="#800000" FontWeight="Bold" FontSize="20" Grid.Column="1" Margin="10 0 10 0"/>
-                <Button Content="Play Sélection" x:Name="btnplayselection" FontWeight="Bold" FontSize="20" Click="PlaySelection_Click" Grid.Column="2"/>
+                <Button Click="Btnsay_Click" x:Name="btnsay" CommandParameter="{Binding CurrentBook.Contenu}" Content="▶ Play" Background="#7FFF00" FontWeight="Bold" FontSize="20" Grid.Column="0"/>
+                <Button Click="Btnpause_Click" x:Name="btnpause" CommandParameter="{Binding CurrentBook.Contenu}" Content="⏸︎ Pause" Background="#FF4066 " FontWeight="Bold" FontSize="20" Grid.Column="1" Margin="10 0 0 0"/>
+                <Button Click="Btnstop_Click" x:Name="btnstop" CommandParameter="{Binding CurrentBook.Contenu}" Content="⏹ Stop" Background="#AB6B51" FontWeight="Bold" FontSize="20" Grid.Column="2" Margin="10 0 10 0"/>
+                <Button Click="Btnplayselection_Click" Content="Play Sélection" x:Name="btnplayselection" FontWeight="Bold" FontSize="20" Grid.Column="3" Background="#99C9EF"/>
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="4">
-            <Button Width="150" CommandParameter="LIST" Content="Retourner aux détails" Margin="0,10,0,0" Grid.Column="2" Background="#f7f5bc"/>
+            <Button Click="Btnstop_Click" Width="150" Command="{Binding Path=GoBack, Source={StaticResource ResourceKey=navigator}}" CommandParameter="LIST" Content="Retourner aux détails" Margin="0,10,0,0" Grid.Column="2" Background="#f7f5bc"/>
         </StackPanel>
     </Grid>
 </Page>
