@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
@@ -38,6 +39,7 @@ namespace WPF.Reader.Pages
             // Speak a string.  
             var button = sender as Button;
             var content = button.CommandParameter;
+            this.synth.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
             this.synth.SpeakAsync((string)content);
 
         }
