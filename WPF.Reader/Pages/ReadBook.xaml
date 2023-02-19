@@ -5,37 +5,32 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPF.Reader.Pages"
       xmlns:vm="clr-namespace:WPF.Reader.ViewModel"
-      mc:Ignorable="d"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
       d:DataContext="{d:DesignInstance Type=vm:InDesignReadBook, d:IsDesignTimeCreatable=True}"
-      Title="ReadBook" Height="688" Width="1189">
+      Title="ReadBook">
     <Page.Resources>
         <vm:Navigator x:Key="navigator" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <!-- On aimerais bien avoir le tire du livre en entête -->
 
-        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Margin="10,8,0,0">
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="20" Margin="10,8,0,0" Grid.Row="0">
             <Run Text="Vous lisez: "/>
             <Run Text="{Binding CurrentBook.Nom}" TextDecorations="Underline" Foreground="Blue"/>
         </TextBlock>
         <!-- Ainsi que le contenu du livre ! -->
-        <TextBox Margin="10,0,10,19"  Name="tbMultiLine"
-                      TextWrapping="Wrap"
-                      AcceptsReturn="True"
-                      VerticalScrollBarVisibility="Visible"
-                     IsReadOnly="true"
-                     Text="{Binding CurrentBook.Contenu}" FontWeight="Bold" Grid.Row="1" Padding="10 10"/>
-        <Button Width="200" Command="{Binding Path=GoBack, Source={StaticResource ResourceKey=navigator}}" CommandParameter="LIST" Content="Retourner aux détails" HorizontalAlignment="Center" Grid.Row="2" Margin="0,0,10,48"/>
-        <Button Width="200"   CommandParameter="{Binding CurrentBook.Contenu}" Content="Lire à voix haute" HorizontalAlignment="Left" Grid.Row="2" Margin="265,38,0,10" Click="LireVoixHaute"/>
-        <Button Width="200"    Content="Pause" HorizontalAlignment="Right" Grid.Row="2" Margin="0,38,499,10" Click="Pause"/>
-        <Button Width="200"    Content="Resume" HorizontalAlignment="Left" Grid.Row="2" Margin="709,37,0,11" Click="Reprendre"/>
+        <TextBox Margin="10,0,10,15"  Name="tbMultiLine" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                     IsReadOnly="true" Text="{Binding CurrentBook.Contenu}" FontWeight="Bold" Grid.Row="1" Padding="10 10"/>
 
-
+        <StackPanel Grid.Row="2">
+            <Button Width="200" Click="PauseOrResume" CommandParameter="{Binding CurrentBook.Contenu}" Content="▶ Play" HorizontalAlignment="Center" Background="#7FFF00" FontWeight="Bold" FontSize="20"/>
+            <Button Width="200" Command="{Binding Path=GoBack, Source={StaticResource ResourceKey=navigator}}" CommandParameter="LIST" Content="Retourner aux détails" Margin="0,20,0,0"/>
+        </StackPanel>
     </Grid>
 </Page>
-

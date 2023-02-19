@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -23,37 +24,41 @@ namespace WPF.Reader.Pages
     public partial class ReadBook : Page
     {
         SpeechSynthesizer synth = new SpeechSynthesizer();
+        public bool IsPauseValue { get; set; } = false;
+        public bool IsFirstTimePlayed { get; set; } = true;
         public ReadBook()
         {
             InitializeComponent();
         }
 
-
-        private void LireVoixHaute(object sender, RoutedEventArgs e)
+        private void PauseOrResume(object sender, RoutedEventArgs e)
         {
-            
-            // Configure the audio output.   
-            
-            //this.synth.SetOutputToDefaultAudioDevice();
-
-            // Speak a string.  
             var button = sender as Button;
-            var content = button.CommandParameter;
-            this.synth.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
-            this.synth.SpeakAsync((string)content);
-
-        }
-        private void Pause(object sender, RoutedEventArgs e)
-        {
-            this.synth.Pause();
-        }
-        private void Reprendre(object sender, RoutedEventArgs e)
-        {
-            this.synth.Resume();
-        }
-        private void Stop(object sender, RoutedEventArgs e)
-        {
-            this.synth.Dispose();
+            if(IsFirstTimePlayed)
+            {
+                var content = button.CommandParameter;
+                this.synth.SelectVoiceByHints(VoiceGender.Neutral, VoiceAge.NotSet, 0, CultureInfo.GetCultureInfo("fr-fr"));
+                synth.SpeakAsync((string)content);
+                IsFirstTimePlayed = false;
+                IsPauseValue = !IsPauseValue;
+                button.Content = "⏸︎ Pause";
+                button.Background = new SolidColorBrush(Color.FromArgb(255, 255, 64, 102));
+                return;
+            }
+            if (IsPauseValue)
+            {
+                synth.Pause();
+                IsPauseValue = !IsPauseValue;
+                button.Content = "▶ Play";
+                button.Background = new SolidColorBrush(Color.FromArgb(255, 127, 255, 0));
+            }
+            else
+            {
+                synth.Resume();
+                IsPauseValue = !IsPauseValue;
+                button.Content = "⏸︎ Pause";
+                button.Background = new SolidColorBrush(Color.FromArgb(255, 255, 64, 102));
+            }
         }
     }
 }
