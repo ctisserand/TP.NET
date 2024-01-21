@@ -12,10 +12,11 @@
         <model:Navigator x:Key="navigator" />
     </Window.Resources>
     <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right" >
-            <Button Command="{Binding Path=GoToHome}" Width="50" Content="Accueil"/>
-        </StackPanel>
-        <Label DockPanel.Dock="Top" Content="Library system" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px"/>
+        <Label DockPanel.Dock="Top" Content="Librairie" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px"/>
+        <Grid DockPanel.Dock="Bottom">
+            <TextBlock>Ce block devrais toujours être la</TextBlock>
+            <Button Command="{Binding Path=GoToHomeCommand}" Width="50" Content="Accueil" HorizontalContentAlignment="Center" HorizontalAlignment="Right"/>
+        </Grid>
         <ContentPresenter  Content="{Binding Path=Frame}" x:Name="Navigation"/>
     </DockPanel>
 </Window>

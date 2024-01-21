@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ASP.Server.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ASP.Server.Models;
 
 namespace ASP.Server.Database
 {
@@ -29,10 +29,10 @@ namespace ASP.Server.Database
             // Une fois les moèles complété Vous pouvez faire directement
             // new Book() { Author = "xxx", Name = "yyy", Price = n.nnf, Content = "ccc", Genres = new() { Romance, Thriller } }
             bookDbContext.Books.AddRange(
-                new Book(), 
-                new Book(),
-                new Book(),
-                new Book()
+                new Book() { },
+                new Book() { },
+                new Book() { },
+                new Book() { }
             );
             // Vous pouvez initialiser la BDD ici
 

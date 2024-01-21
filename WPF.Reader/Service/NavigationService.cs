@@ -19,7 +19,7 @@ namespace WPF.Reader.Service
     /// <summary>
     /// Aucune raison de toucher a autre chose que <see cref="viewMapping"/> dans cette classe, elle permet de gérer la navigation
     /// </summary>
-    public class NavigationService : INavigationService
+    public class NavigationService(Frame frame) : INavigationService
     {
         /// <summary>
         /// Vous pouvez rajouter des correspondances ViewModel <-> View ici si vous souhaitez rajouter des pages
@@ -31,12 +31,7 @@ namespace WPF.Reader.Service
             [typeof(ViewModel.DetailsBook)] = typeof(Pages.DetailsBook)
         };
 
-        public Frame Frame { get; init; }
-
-        public NavigationService(Frame frame)
-        {
-            Frame = frame;
-        }
+        public Frame Frame { get; init; } = frame;
 
         public bool CanGoBack => Frame.CanGoBack;
 

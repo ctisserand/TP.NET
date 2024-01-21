@@ -1,5 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
+using Windows.Web.Http;
 using WPF.Reader.Model;
+using WPF.Reader.OpenApi;
 
 namespace WPF.Reader.Service
 {
@@ -19,5 +24,7 @@ namespace WPF.Reader.Service
         // C'est aussi ici que vous ajouterez les requête réseau pour récupérer les livres depuis le web service que vous avez fait
         // Vous pourrez alors ajouter les livres obtenu a la variable Books !
         // Faite bien attention a ce que votre requête réseau ne bloque pas l'interface 
+        public LibraryService() {
+        }
     }
 }

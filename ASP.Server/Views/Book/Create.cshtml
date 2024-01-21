@@ -1,5 +1,6 @@
 ﻿@using ASP.Server.Controllers
-@model CreateBookModel
+@using ASP.Server.ViewModels
+@model CreateBookViewModel
 @{
     ViewData["Title"] = "Add a book";
 }
@@ -24,11 +25,13 @@ label {
         <label asp-for="Name"></label>
         <input asp-for="Name" />
     </div>
+    <span asp-validation-for="Name" class="text-danger"></span>
     <div class="input-group">
         <label asp-for="Genres"></label>
         <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
-        <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Name"))">
+        <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Id"))">
         </select>
     </div>
+    <span asp-validation-for="Genres" class="text-danger"></span>
     <input type="submit" value="Add" style="width: 100%; margin-top: 50px" />
 </form>

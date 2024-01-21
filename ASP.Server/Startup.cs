@@ -13,13 +13,9 @@ using System.Globalization;
 namespace ASP.Server
 {
 
-    public class Startup
+    public class Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; } = configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -27,45 +23,10 @@ namespace ASP.Server
             services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase("LibraryDatabase"));
             services.AddControllersWithViews().AddNewtonsoftJson().AddRazorRuntimeCompilation();;
             services.AddSwaggerDocument();
-            services.AddMvc(options =>
-            {
-                options.ModelBinderProviders.Insert(0, new CustomBinderProvider());
-            });
-        }
-        public class CustomBinderProvider : IModelBinderProvider
-        {
-            public IModelBinder GetBinder(ModelBinderProviderContext context)
-            {
-                if (context == null)
-                {
-                    throw new ArgumentNullException(nameof(context));
-                }
 
-                if (context.Metadata.ModelType == typeof(float))
-                {
-                    return new DecimalModelBinder();
-                }
+            services.AddAutoMapper(typeof(MappingProfile));
 
-                return null;
-            }
-        }
-        public class DecimalModelBinder : IModelBinder
-        {
-            public Task BindModelAsync(ModelBindingContext bindingContext)
-            {
-                var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName).FirstValue;
-
-                float value = 0;
-                if(float.TryParse(valueProviderResult, NumberStyles.Float ,CultureInfo.InvariantCulture, out value))
-                {
-                    bindingContext.Result = ModelBindingResult.Success(value);
-                }
-                else
-                    bindingContext.ModelState.TryAddModelError(
-                            bindingContext.ModelName,
-                            "Could not parse value.");
-                return Task.CompletedTask;
-            }    
+            services.AddMvc();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder ASP_Server, IWebHostEnvironment env)
@@ -85,7 +46,7 @@ namespace ASP.Server
             ASP_Server.UseRouting();
             ASP_Server.UseAuthorization();
             ASP_Server.UseOpenApi();
-            ASP_Server.UseSwaggerUi3();
+            ASP_Server.UseSwaggerUi();
             ASP_Server.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -95,9 +56,7 @@ namespace ASP.Server
 
             using (var scope = ASP_Server.ApplicationServices.CreateScope())
             {
-                var services = scope.ServiceProvider;
-                var libraryDbContext = services.GetRequiredService<LibraryDbContext>();
-                DbInitializer.Initialize(libraryDbContext);
+                DbInitializer.Initialize(scope.ServiceProvider.GetRequiredService<LibraryDbContext>());
             }
         }
     }

@@ -7,7 +7,7 @@ Un web service de stockage et de gestion de livres en ligne
 
 Un logiciel sous Windows pour consulter et lire les livres
 # Contrainte
-Langages autorisés : C#, HTML, Javascript
+Langages autorisés : C#, HTML, Javascript, CSS, TypeScript
 
 Serveur web : ASP.Net Core
 
@@ -18,55 +18,54 @@ Votre solution devra être basé sur le projet Library.sln
 La partie server est dans le projet ASP.Server
 
 La partie client est dans le projet WPF.Reader
+
+La connexion entre votre client et votre serveur est dans le projet WPF.Reader.OpenApi
 # Aide
-Pour éviter les boucles infinies entre genre et livre lors de la conversion en JSON:
-
-- Utiliser l’attribut `[JsonIgnore]` sur une des propriétés pour éviter la boucle
-- Utiliser le LazyLoading de facon pertinente
-  - Turn lazy loading off for serialization <https://learn.microsoft.com/en-us/ef/ef6/querying/related-data#turn-lazy-loading-off-for-serialization>
-- Utiliser un DTO (voir plus bas)
+1) Pour éviter les boucles infinies entre genre et livre lors de la conversion en JSON:
+    - Utiliser un ou plusieur DTO (voir plus bas)
 
 ---
 
-Pour renvoyer un objet différent de celui contenu dans votre base utilisé aussi un DTO
-- <https://learn.microsoft.com/en-us/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-5>
+2) Pour renvoyer un objet différent de celui contenu dans votre base utilisé un DTO
+    - Vous fait votre DTO à la main: <https://learn.microsoft.com/en-us/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-5>
+    - Vous utiliser la librairie AutoMapper: <https://automapper.org/> 
 
 ---
 
-Pour que Entity Framework retourne les genres avec les livres : 
+3) Pour que Entity Framework retourne les genres avec les livres : 
 
-- Utilisez la méthode Include : `libraryDbContext.Books.Include(b => b.Genres).Where(x => x.Price > 0)`
-- Utiliser le LazyLoading
-  - <https://learn.microsoft.com/en-us/ef/ef6/querying/related-data>
+    - Utilisez la méthode Include : `libraryDbContext.Books.Include(b => b.Genres).Where(x => x.Price > 0)`
+    - Utiliser le LazyLoading
+      - <https://learn.microsoft.com/en-us/ef/ef6/querying/related-data>
 
 ---
 
-En WPF certain évenements ne suportent pas les comandes utilisez le package [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf)
-  - Exemple  
-    view.xaml
-    ```xml
-    <page xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors">
-      ...
-      <ListBox ItemsSource="{Binding ChangeMe}">
-        <behaviours:Interaction.Triggers>
-          <behaviours:EventTrigger EventName="SelectionChanged">
-              <behaviours:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
-          </behaviours:EventTrigger>
-        </behaviours:Interaction.Triggers>
-      </ListBox>
-      ...
-    </page>
-    ```
-    viewmodel.cs
-    ```cs
-    private RelayCommand selectionChangedCommand;
-    public ICommand SelectionChangedCommand => selectionChangedCommand ??= new RelayCommand(SelectionChanged);
+4) En WPF certain évenements ne suportent pas les comandes utilisez le package [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf)
+      - Exemple  
+        view.xaml
+        ```xml
+        <page xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors">
+          ...
+          <ListBox ItemsSource="{Binding ChangeMe}">
+            <behaviours:Interaction.Triggers>
+              <behaviours:EventTrigger EventName="SelectionChanged">
+                  <behaviours:InvokeCommandAction Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"/>
+              </behaviours:EventTrigger>
+            </behaviours:Interaction.Triggers>
+          </ListBox>
+          ...
+        </page>
+        ```
+        viewmodel.cs
+        ```cs
+        private RelayCommand selectionChangedCommand;
+        public ICommand SelectionChangedCommand => selectionChangedCommand ??= new RelayCommand(SelectionChanged);
     
-    private void SelectionChanged(object commandParameter)
-    {
+        private void SelectionChanged(object commandParameter)
+        {
     
-    }
-    ```
+        }
+        ```
 
 # Fonctionnalité attendue
 ## Livrable
@@ -111,6 +110,10 @@ Options :
   - le nombre de libres total disponible
   - le nombre de livres par autheur
   - Le nombre maximum, minmum, median et moyen de mots d'un livre
+- Importer les details d'un livre par l'OpenLibrary
+  - https://openlibrary.org/
+  - Pouvoir rentrer un contenu + isbn
+  - récupéré l'auteur + description et l'ecrire en base
 
 Une ébauche de ce qui est attendu ce trouve dans ASP.Server/Controllers/BookController.cs et GenreController.cs
 
@@ -255,6 +258,9 @@ L’application doit pouvoir recevoir les livres depuis le serveur développé d
 
 Pour générer le code client vous pouvez utiliser :
 
+- Utiliser la librairie WPF.Reader.OpenApi (mettez la à jour par contre !)
+    - Assurer vous que votre serveur fonctionne 
+    - Depuis Visual Studio selectionner le projet WPF.Reader.OpenApi -> Clicker sur projet depuis le menu -> Services connectés -> Gérer les services connectés -> Clicker sur les 3 points (...) sur la ligne <swagger - Client> -> Actualiser
 - OpenAPI Generator Plugin (<https://marketplace.visualstudio.com/items?itemName=ChristianResmaHelle.ApiClientCodeGenerator2022>)
 - OpenApi Generator (<https://github.com/OpenAPITools/openapi-generator>)
 - Unchased NSwag (<https://marketplace.visualstudio.com/items?itemName=Unchase.unchaseopenapiconnectedservice>) 

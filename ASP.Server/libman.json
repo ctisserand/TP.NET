@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "defaultProvider": "filesystem",
+  "libraries": [
+    {
+      "library": "node_modules/jquery/dist/",
+      "destination": "wwwroot/lib/jquery/dist/"
+    },
+    {
+      "library": "node_modules/jquery-validation-unobtrusive/dist/",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/dist/"
+    },
+    {
+      "library": "node_modules/jquery-validation/dist/",
+      "destination": "wwwroot/lib/jquery-validation/dist/"
+    },
+    {
+      "library": "node_modules/bootstrap/dist/css/",
+      "destination": "wwwroot/lib/bootstrap/dist/css/"
+    },
+    {
+      "library": "node_modules/bootstrap/dist/js/",
+      "destination": "wwwroot/lib/bootstrap/dist/js/"
+    }
+  ]
+}
