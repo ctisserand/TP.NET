@@ -1,0 +1,23 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.Reader.Pages.DetailsBook"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MAUI.Reader.Pages"
+             xmlns:vm="clr-namespace:MAUI.Reader.ViewModel"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             x:DataType="vm:InDesignDetailsBook"
+             Title="DetailsBook">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!-- il faut afficher les information du livre: Nom, Auteur, Prix, Genres-->
+        <!-- Mais pas le contenu ! -->
+        <!-- N'oublier pas le bouton pour aller lire le livre. La commande ReadCommand est faite pour ca ! -->
+    </Grid>
+</ContentPage>

@@ -1,0 +1,25 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.Reader.Pages.ReadBook"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MAUI.Reader.Pages"
+             xmlns:vm="clr-namespace:MAUI.Reader.ViewModel"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             d:DataContext="vm:InDesignReadBook"
+             x:DataType="vm:DetailsBook"
+             Title="ReadBook">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <!-- On aimerais bien avoir le tire du livre en entête -->
+
+        <!-- Ainsi que le contenu du livre ! -->
+    </Grid>
+</ContentPage>
+
