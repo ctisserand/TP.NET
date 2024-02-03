@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP.Server", "ASP.Server\AS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF.Reader.OpenApi", "WPF.Reader.OpenApi\WPF.Reader.OpenApi.csproj", "{14217C78-F219-4C77-BFFB-AA016A18D493}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Option.ASP.Server", "Option.ASP.Server\Option.ASP.Server.vcxproj", "{2CF83A42-3805-4ED1-9EDD-A080E71C2F01}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAUI.Reader", "MAUI.Reader\MAUI.Reader.csproj", "{94E3381D-7D11-41E4-982A-18DAAD7260A1}"
 EndProject
 Global
