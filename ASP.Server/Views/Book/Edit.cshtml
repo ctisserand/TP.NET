@@ -1,0 +1,30 @@
+﻿@using ASP.Server.Controllers
+@using ASP.Server.ViewModels
+@model EditBookViewModel
+@{
+    ViewData["Title"] = "Edit a Book";
+}
+<h2>Modifier le livre</h2>
+
+<form asp-controller="Book" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Author"></label>
+        <input asp-for="Author" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <!-- Ajoutez d'autres champs ici si nécessaire -->
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>

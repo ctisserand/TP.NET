@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASP.Server.Database;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using ASP.Server.Models;
 using ASP.Server.ViewModels;
-using AutoMapper.QueryableExtensions;
 using AutoMapper;
 
 namespace ASP.Server.Controllers
@@ -68,6 +65,57 @@ namespace ASP.Server.Controllers
             libraryDbContext.SaveChanges();
 
             return RedirectToAction(nameof(List)); // Rediriger vers la liste des livres après la suppression
+        }
+
+        public ActionResult Edit(EditBookViewModel model, long idToModify)
+        {
+            var bookToModify = libraryDbContext.Books.Include(book => book.Genres).Single(book => book.Id == idToModify);            // Le IsValid est True uniquement si tous les champs de CreateBookModel marqués Required sont remplis
+
+            if (ModelState.IsValid)
+            {
+                var book = libraryDbContext.Books
+                    .Include(b => b.Genres)
+                    .FirstOrDefault(b => b.Id == model.Id);
+
+                if (book == null)
+                {
+                    return NotFound();
+                }
+
+                // Mettre à jour les propriétés du livre avec les valeurs du modèle
+                book.Title = model.Name;
+                book.Author = model.Author;
+                book.Price = model.Price;
+                // Mettre à jour d'autres propriétés si nécessaire
+
+                // Mettre à jour les genres associés au livre
+                book.Genres.Clear();
+                foreach (var genreId in model.Genres)
+                {
+                    var genre = libraryDbContext.Genre.Find(genreId);
+                    if (genre != null)
+                    {
+                        book.Genres.Add(genre);
+                    }
+                }
+
+                // Enregistrer les modifications dans la base de données
+                libraryDbContext.SaveChanges();
+                
+
+                return RedirectToAction("List", "Book"); // Rediriger vers la liste des livres après la modification
+            }
+
+            // Si le modèle n'est pas valide, retourner le formulaire avec les erreurs
+            return View(new EditBookViewModel()
+            {
+                Id = bookToModify.Id,
+                Name = bookToModify.Name,
+                Author = bookToModify.Author,
+                Price = bookToModify.Price,
+                Content = bookToModify.Content,
+                AllGenres = libraryDbContext.Genre.ToList()
+            });
         }
 
     }

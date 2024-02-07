@@ -25,11 +25,16 @@
                <p>Auteur: @book.Author</p>
                <p>Prix: @book.Price</p>
                <p>Genres: @string.Join(", ", book.Genres.Select(g => g.Name))</p>
+  
                 
-                <form asp-controller="Book" asp-action="Delete" method="post">
-                    <input type="hidden" name="id" value="@book.Id" />
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
+                <div>
+                    <form asp-controller="Book" asp-action="Delete" method="post" style="display: inline;">
+                        <input type="hidden" name="id" value="@book.Id" />
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
+
+                    <a href="@Url.Action("Edit", "Book", new { id = book.Id })" class="btn btn-primary">Modifier</a>
+                </div>
            </div>
 
         </main>
