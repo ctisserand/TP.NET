@@ -11,6 +11,9 @@ namespace ASP.Server.Models
 
         [Key]
         public int Id { get; set; }
+        public string Name { get; set; } // Ajout du nom du genre
+        public List<Book> Books { get; set; } = new List<Book>(); // Liste des livres associés
+
 
         // Mettez ici les propriété de votre livre: Nom et Livres associés
 

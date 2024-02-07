@@ -23,18 +23,52 @@ namespace ASP.Server.Controllers
             return View(ListBooks);
         }
 
-        public ActionResult<CreateBookViewModel> Create(CreateBookViewModel book)
+        public ActionResult Create(CreateBookViewModel model)
         {
-            // Le IsValid est True uniquement si tous les champs de CreateBookModel marqués Required sont remplis
             if (ModelState.IsValid)
             {
-                // Completer la création du livre avec toute les information nécéssaire que vous aurez ajoutez, et metter la liste des gener récupéré de la base aussi
-                libraryDbContext.Add(new Book() {  });
+                var book = new Book
+                {
+                    Title = model.Name,
+                    Author = model.Author,
+                    Price = model.Price,
+                    Content = model.Content,
+                };
+
+                // Ajouter les genres sélectionnés par l'utilisateur
+                foreach (var genreId in model.Genres)
+                {
+                    var genre = libraryDbContext.Genre.Find(genreId);
+                    if (genre != null)
+                    {
+                        book.Genres.Add(genre);
+                    }
+                }
+                libraryDbContext.Books.Add(book);
                 libraryDbContext.SaveChanges();
+
+                return RedirectToAction(nameof(List)); // Rediriger vers la liste des livres après l'ajout
             }
 
-            // Il faut interoger la base pour récupérer tous les genres, pour que l'utilisateur puisse les slécétionné
-            return View(new CreateBookViewModel() { AllGenres = libraryDbContext.Genre});
+            // Préparer de nouveau les genres pour le cas où la validation échoue
+
+            return View(new CreateBookViewModel() { AllGenres = libraryDbContext.Genre.ToList() });
+
         }
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var bookToDelete = libraryDbContext.Books.Find(id);
+            if (bookToDelete == null)
+            {
+                return NotFound();
+            }
+
+            libraryDbContext.Books.Remove(bookToDelete);
+            libraryDbContext.SaveChanges();
+
+            return RedirectToAction(nameof(List)); // Rediriger vers la liste des livres après la suppression
+        }
+
     }
 }

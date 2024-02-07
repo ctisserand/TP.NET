@@ -10,7 +10,11 @@ namespace ASP.Server.ViewModels
     public class CreateBookViewModel
     {
         [Required]
+        public int Id { get; set; }
         public String Name { get; set; }
+        public string Author { get; set; } // Ajouté
+        public decimal Price { get; set; } // Ajouté
+        public string Content { get; set; } // Ajouté
 
         // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
 
@@ -20,5 +24,7 @@ namespace ASP.Server.ViewModels
 
         // Liste des genres a afficher à l'utilisateur
         public IEnumerable<Genre> AllGenres { get; init; }
+
+
     }
 }
