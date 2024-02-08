@@ -11,6 +11,7 @@ namespace ASP.Server.ViewModels
         public int Id { get; set; }
         public String Name { get; set; }
         public string Author { get; set; } // Ajouté
+        public string Title { get; set; }
         public decimal Price { get; set; } // Ajouté
         public string Content { get; set; } // Ajouté
 

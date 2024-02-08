@@ -4,6 +4,22 @@
 @{
     ViewData["Title"] = "Edit a Book";
 }
+<style>
+    .input-group {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    input, textarea, select {
+        flex-basis: 85%;
+    }
+
+    label {
+        flex-basis: 10%;
+    }
+</style>
 <h2>Modifier le livre</h2>
 
 <form asp-controller="Book" asp-action="Edit" method="post">
@@ -23,8 +39,15 @@
         <label asp-for="Price"></label>
         <input asp-for="Price" class="form-control" />
     </div>
+    <div class="form-group">
+        <label asp-for="Genres"></label>
+        <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
+        <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Id"))">
+        </select>
+    </div>
 
     <!-- Ajoutez d'autres champs ici si nécessaire -->
 
     <button type="submit" class="btn btn-primary">Enregistrer</button>
 </form>
+

@@ -67,9 +67,11 @@ namespace ASP.Server.Controllers
             return RedirectToAction(nameof(List)); // Rediriger vers la liste des livres après la suppression
         }
 
-        public ActionResult Edit(EditBookViewModel model, long idToModify)
+
+        public ActionResult Edit(EditBookViewModel model)
         {
-            var bookToModify = libraryDbContext.Books.Include(book => book.Genres).Single(book => book.Id == idToModify);            // Le IsValid est True uniquement si tous les champs de CreateBookModel marqués Required sont remplis
+            var bookToModify = libraryDbContext.Books.Include(book => book.Genres).SingleOrDefault(book => book.Id == model.Id);
+            // Le IsValid est True uniquement si tous les champs de CreateBookModel marqués Required sont remplis
 
             if (ModelState.IsValid)
             {

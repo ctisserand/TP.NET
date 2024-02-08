@@ -33,7 +33,12 @@
                         <button type="submit" class="btn btn-danger">Supprimer</button>
                     </form>
 
-                    <a href="@Url.Action("Edit", "Book", new { id = book.Id })" class="btn btn-primary">Modifier</a>
+                    <form asp-controller="Book" asp-action="Edit" method="post" style="display: inline;">
+                        <input type="hidden" name="id" value="@book.Id" />
+                        <button type="submit" class="btn btn-danger">modifier</button>
+                    </form>
+
+                    
                 </div>
            </div>
 
