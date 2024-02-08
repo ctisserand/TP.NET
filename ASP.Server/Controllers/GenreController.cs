@@ -1,20 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASP.Server.Database;
-using ASP.Server.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using ASP.Server.Models;
+using ASP.Server.ViewModels;
 using AutoMapper;
+using System.ComponentModel.DataAnnotations;
 
 namespace ASP.Server.Controllers
 {
-    public class GenreController(LibraryDbContext libraryDbContext, IMapper mapper) : Controller
+    public class CreateGenreModel
     {
-        private readonly LibraryDbContext libraryDbContext = libraryDbContext;
-        private readonly IMapper mapper = mapper;
+        [Required(ErrorMessage = "Le nom du genre est requis.")]
+        public string Name { get; set; }
+    }
 
-        // A vous de faire comme BookController.List mais pour les genres !
+    public class EditGenreModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class GenreController : Controller
+    {
+        private readonly LibraryDbContext _libraryDbContext;
+        private readonly IMapper _mapper;
+
+        public GenreController(LibraryDbContext libraryDbContext, IMapper mapper)
+        {
+            _libraryDbContext = libraryDbContext;
+            _mapper = mapper;
+        }
+
+        public ActionResult<IEnumerable<Genre>> List()
+        {
+            IEnumerable<Genre> listGenres = _libraryDbContext.Genre.ToList();
+            return View(listGenres);
+        }
+
+        public ActionResult Create()
+        {
+            var model = new CreateGenreModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Create(CreateGenreModel genre)
+        {
+            if (ModelState.IsValid)
+            {
+                _libraryDbContext.Add(new Genre() { Name = genre.Name });
+                _libraryDbContext.SaveChanges();
+                return RedirectToAction(nameof(List));
+            }
+
+            return View(genre);
+        }
+        public ActionResult<EditGenreModel> Edit(EditGenreModel genre , long idToEdit)
+        {
+            var genreToEdit = _libraryDbContext.Genre.Single(genre => genre.Id == idToEdit );
+
+            if (ModelState.IsValid)
+            {
+
+                genreToEdit.Name = genre.Name;
+                _libraryDbContext.SaveChanges();
+                return RedirectToAction("List");
+
+            };
+
+            return View(new EditGenreModel()
+            { Id = genreToEdit.Id, Name = genreToEdit.Name });
+
+        }
     }
 }
