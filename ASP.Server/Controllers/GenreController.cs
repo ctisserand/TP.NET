@@ -76,5 +76,12 @@ namespace ASP.Server.Controllers
             { Id = genreToEdit.Id, Name = genreToEdit.Name });
 
         }
+        public ActionResult<IEnumerable<Genre>> Delete(long id)
+        {
+            var genre = _libraryDbContext.Genre.Single(genre => genre.Id == id);
+            _libraryDbContext.Genre.Remove(genre);
+            _libraryDbContext.SaveChanges();
+            return RedirectToAction("List", "Genre");
+        }
     }
 }
