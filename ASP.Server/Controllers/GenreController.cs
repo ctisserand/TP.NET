@@ -19,6 +19,7 @@ namespace ASP.Server.Controllers
     public class EditGenreModel
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
     }
 
@@ -57,9 +58,10 @@ namespace ASP.Server.Controllers
 
             return View(genre);
         }
-        public ActionResult<EditGenreModel> Edit(EditGenreModel genre , long idToEdit)
+        public ActionResult<EditGenreModel> Edit(EditGenreModel genre)
         {
-            var genreToEdit = _libraryDbContext.Genre.Single(genre => genre.Id == idToEdit );
+            var genreToEdit = _libraryDbContext.Genre.Single(g => g.Id == genre.Id );
+
 
             if (ModelState.IsValid)
             {

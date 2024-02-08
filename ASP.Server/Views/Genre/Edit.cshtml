@@ -1,5 +1,33 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ASP.Server.Controllers
+@using ASP.Server.Models
+@model EditGenreModel
 @{
+    ViewData["Title"] = "Edit Genre";
 }
+<style>
+    .input-group {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    input, textarea, select {
+        flex-basis: 85%;
+    }
+
+    label {
+        flex-basis: 10%;
+    }
+</style>
+<h2>Modifier le Genre</h2>
+
+
+<form asp-controller="Genre" asp-action="Edit" method="post">
+    <input type="hidden" value="@Model.Id" name="id" />
+    <div class="input-group">
+        <label asp-for="Name">Genre:</label>
+        <input asp-for="Name" value="@Model.Name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>
