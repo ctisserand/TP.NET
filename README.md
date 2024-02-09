@@ -136,6 +136,7 @@ Options:
     - les paramètres de l'API permettent de choisir le plugin a utiliser (/book/{id}?output=xxx)
     - Pas de package exterieur autorisé !
 - Faite pareil mais avec des plugins codés dans un language compilé (C, C++, RUST, ...)
+- Rajouter la possibilité de décharger la DLL
 
 ## Récupérer un livre avec son contenu : /book/{id} 
 Exemple:
