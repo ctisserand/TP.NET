@@ -58,4 +58,21 @@
     <Folder Include="wwwroot\lib\jquery\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Author\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Author\List.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Book\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Book\List.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Genre\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Genre\List.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Shared\Error.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Shared\_Layout.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Shared\_LoginPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
 </Project>
