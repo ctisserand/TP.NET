@@ -10,4 +10,5 @@ namespace ASP.Server.Dtos
     {
         public int Id { get; set; }
     }
+    //TODO : Ajouter les propriétés nécessaires pour afficher les livres
 }

@@ -20,6 +20,33 @@ namespace ASP.Server.Api
     {
         private readonly LibraryDbContext libraryDbContext = libraryDbContext;
         private readonly IMapper mapper = mapper;
+        
+        
+        [HttpGet("/api/[controller]/[action]/GetBooks")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<IEnumerable<BookDto>> GetBooks()
+        {
+            return mapper.Map<List<BookDto>>(libraryDbContext.Books);
+        }
+        
+        [HttpGet("/api/[controller]/[action]/GetBook")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<BookDto> GetBook(int id)
+        {
+            return libraryDbContext.Books.
+                Where(x => x.Id == id).ProjectTo<BookDto>(mapper.ConfigurationProvider).FirstOrDefault();
+        }
+        
+        [HttpGet("/api/[controller]/[action]/GetGenres")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<IEnumerable<GenreDto>> GetGenres()
+        {
+            return mapper.Map<List<GenreDto>>(libraryDbContext.Genre);
+        }
+        
 
         // Methode a ajouter : 
         // - GetBooks
@@ -61,6 +88,7 @@ namespace ASP.Server.Api
         //      this.mapper.Map<List<ItemDto>>(my_array);
 
         // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
+        /*
         public ActionResult<IEnumerable<BookDto>> GetBooks()
         {
             // Exemple sans dependence externe
@@ -69,6 +97,7 @@ namespace ASP.Server.Api
             // return mapper.Map<List<BookDto>>(libraryDbContext.Books);
             throw new NotImplementedException("You have to do it your self");
         }
+        */
 
     }
 }
