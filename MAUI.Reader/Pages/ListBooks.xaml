@@ -36,7 +36,7 @@
             
             -->
 
-            <!-- Supprimer tous ta parti suivante qui est juste la pour vous monter ce qu'on peut faire -->
+            <!-- Supprimer tous ta parti suivante qui est juste la pour vous montrer ce qu'on peut faire -->
             <Image Source="dotnet_bot.png"
                    HeightRequest="185"
                    Aspect="AspectFit"

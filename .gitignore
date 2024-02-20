@@ -361,3 +361,21 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+
+# Rider
+.idea/
+*.sln.iml
+*.sln.DotSettings.user
+*.sln.DotSettings
+*.csproj.DotSettings.user
+*.csproj.DotSettings
+*.csproj.user
+*.DotSettings
+
+
