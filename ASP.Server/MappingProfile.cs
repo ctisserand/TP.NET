@@ -15,6 +15,7 @@ namespace ASP.Server
             // Rajouter autant de ligne ici que vous avez de mapping Model <-> DTO
             // https://docs.automapper.org/en/latest/
             CreateMap<Book, BookDto>();
+            CreateMap<Genre, GenreDTo>();
         }
     }
 }

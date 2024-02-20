@@ -10,11 +10,7 @@ namespace ASP.Server.Dtos
         public string Auteur { get; set; }
         public double Prix { get; set; }
         public string Contenu { get; set; }
-        public List<string> Genres { get; set; } 
+        public List<GenreDTo> Genres { get; set; } 
 
-        public BookDto()
-        {
-            Genres = new List<string>(); 
-        }
     }
 }

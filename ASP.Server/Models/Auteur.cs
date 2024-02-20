@@ -7,7 +7,6 @@ namespace ASP.Server.Models
 
         public int Id { get; set; }
         public string Nom { get; set; }
-
         public IEnumerable Livres { get; set; }
     }
 }

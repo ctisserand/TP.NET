@@ -33,7 +33,7 @@ namespace ASP.Server.Controllers
                 libraryDbContext.SaveChanges();
             }
 
-            // Il faut interoger la base pour récupérer tous les genres, pour que l'utilisateur puisse les slécétionné
+            // Il faut interoger la base pour récupérer tous les genres, pour que l'utilisateur puisse les sélectionné
             return View(new CreateBookViewModel() { AllGenres = libraryDbContext.Genres});
         }
     }

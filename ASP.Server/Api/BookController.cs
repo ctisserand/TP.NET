@@ -23,6 +23,35 @@ namespace ASP.Server.Api
 
         // Methode a ajouter : 
         // - GetBooks
+        [HttpGet]
+        public ActionResult<IEnumerable<BookDto>> GetBooks([FromQuery] List<int> genreIds, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
+        {
+            IQueryable<Book> query = libraryDbContext.Livres;
+
+            if (offset >= 0 && limit < 100 )
+            {
+                if (genreIds.Count > 0)
+                {
+                    query = query.Where(b => b.Genres.Any(g => genreIds.Contains(g.Id)));
+                }
+
+                var books = query
+                            .Include(b => b.Genres)
+                            .OrderBy(b => b.Id)
+                            .Skip(offset)
+                            .Take(limit)
+                            .ProjectTo<BookDto>(mapper.ConfigurationProvider)
+                            .ToList();
+
+                return Ok(books);
+            }
+            else
+            {
+                return BadRequest("Offset and limit are not valid");
+            }
+        }
+
+
         //   - Entrée: Optionel -> Liste d'Id de genre, limit -> defaut à 10, offset -> défaut à 0
         //     Le but de limit et offset est dé créer un pagination pour ne pas retourner la BDD en entier a chaque appel
         //   - Sortie: Liste d'object contenant uniquement: Auteur, Genres, Titre, Id, Prix
@@ -31,6 +60,23 @@ namespace ASP.Server.Api
 
         // - GetBook
         //   - Entrée: Id du livre
+
+        [HttpGet]
+        public ActionResult<BookDto> GetBook([FromQuery] int id)
+        {
+            var book = libraryDbContext.Livres
+                .Include(b => b.Genres)
+                .FirstOrDefault(b => b.Id == id);
+
+            if (book != null)
+            {
+                return Ok(mapper.Map<BookDto>(book));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }   
         //   - Sortie: Object livre entier
 
         // - GetGenres
@@ -61,7 +107,7 @@ namespace ASP.Server.Api
         //      this.mapper.Map<List<ItemDto>>(my_array);
 
         // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
-        public ActionResult<IEnumerable<BookDto>> GetBooks()
+        /*public ActionResult<IEnumerable<BookDto>> GetBooks()
         {
             // Exemple sans dependence externe
             // return libraryDbContext.Books.Select(b => new BookDto { Id = b.Id });
@@ -69,7 +115,7 @@ namespace ASP.Server.Api
             // return mapper.Map<List<BookDto>>(libraryDbContext.Books);
             throw new NotImplementedException("You have to do it your self");
         }
-
+        */
     }
 }
 
