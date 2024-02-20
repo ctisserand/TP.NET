@@ -90,7 +90,7 @@ namespace ASP.Server.Api
         [HttpGet("/api/genres")]
         public ActionResult<IEnumerable<GenreDto>> GetGenres()
         {
-            var genres = libraryDbContext.Genre.ProjectTo<GenreDto>(mapper.ConfigurationProvider).ToListAsync();
+            var genres = libraryDbContext.Genres.ProjectTo<GenreDto>(mapper.ConfigurationProvider).ToListAsync();
             return Ok(genres);
             throw new NotImplementedException("You have to do it your self");
         }
