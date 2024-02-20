@@ -24,13 +24,12 @@ namespace ASP.Server.Api
         // Methode a ajouter : 
         // - GetBooks
         [HttpGet]
-        public ActionResult<IEnumerable<BookDto>> GetBooks([FromQuery] List<int> genreIds, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
+        public ActionResult<IEnumerable<BookListDto>> GetBooks([FromQuery] List<int> genreIds, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
         {
-            IQueryable<Book> query = libraryDbContext.Livres;
-
-            if (offset >= 0 && limit < 100 )
+            IQueryable<Book> query = libraryDbContext.Livres; 
+            if (offset >= 0 && limit <= 100) 
             {
-                if (genreIds.Count > 0)
+                if (genreIds.Any()) // Vérifie s'il y a des IDs de genre
                 {
                     query = query.Where(b => b.Genres.Any(g => genreIds.Contains(g.Id)));
                 }
@@ -40,7 +39,7 @@ namespace ASP.Server.Api
                             .OrderBy(b => b.Id)
                             .Skip(offset)
                             .Take(limit)
-                            .ProjectTo<BookDto>(mapper.ConfigurationProvider)
+                            .ProjectTo<BookListDto>(mapper.ConfigurationProvider) // Utilisez BookListDto ici
                             .ToList();
 
                 return Ok(books);
@@ -52,11 +51,6 @@ namespace ASP.Server.Api
         }
 
 
-        //   - Entrée: Optionel -> Liste d'Id de genre, limit -> defaut à 10, offset -> défaut à 0
-        //     Le but de limit et offset est dé créer un pagination pour ne pas retourner la BDD en entier a chaque appel
-        //   - Sortie: Liste d'object contenant uniquement: Auteur, Genres, Titre, Id, Prix
-        //     la liste restourner doit être compsé des élément entre <offset> et <offset + limit>-
-        //     Dans [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] si offset=8 et limit=5, les élément retourner seront : 8, 9, 10, 11, 12
 
         // - GetBook
         //   - Entrée: Id du livre
@@ -76,11 +70,20 @@ namespace ASP.Server.Api
             {
                 return NotFound();
             }
-        }   
+        }
         //   - Sortie: Object livre entier
 
         // - GetGenres
         //   - Entrée: Rien
+        [HttpGet]
+        public ActionResult<IEnumerable<GenreDTo>> GetGenres()
+        {
+            var genres = libraryDbContext.Genres
+                .ProjectTo<GenreDTo>(mapper.ConfigurationProvider)
+                .ToList();
+
+            return Ok(genres);
+        }
         //   - Sortie: Liste des genres
 
         // Aide:
