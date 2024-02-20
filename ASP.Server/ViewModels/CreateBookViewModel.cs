@@ -10,9 +10,17 @@ namespace ASP.Server.ViewModels
     public class CreateBookViewModel
     {
         [Required]
-        public String Name { get; set; }
+        public String Nom { get; set; }
 
-        // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
+        [Required]
+        public String Auteur { get; set; }
+
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Le prix doit être supérieur à 0.")]
+        public double Prix { get; set; }
+
+        [Required]
+        public String Contenu { get; set; }
 
         // Liste des genres séléctionné par l'utilisateur
         [Required(ErrorMessage = "You need at least 1 genre"), MinLength(1)]
@@ -20,5 +28,8 @@ namespace ASP.Server.ViewModels
 
         // Liste des genres a afficher à l'utilisateur
         public IEnumerable<Genre> AllGenres { get; init; }
+
     }
+
+
 }

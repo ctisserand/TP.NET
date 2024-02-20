@@ -16,7 +16,7 @@ namespace ASP.Server
             // https://docs.automapper.org/en/latest/
             CreateMap<Book, BookDto>();
             CreateMap<Genre, GenreDTo>();
-            CreateMap<Book, BookListDto>()
+            CreateMap<Book, BookListDTo>()
             .ForMember(dto => dto.Genres, opt => opt.MapFrom(book => book.Genres.Select(g => g.Nom))); ;
         }
     }

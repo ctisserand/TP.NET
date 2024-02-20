@@ -24,31 +24,41 @@ namespace ASP.Server.Api
         // Methode a ajouter : 
         // - GetBooks
         [HttpGet]
-        public ActionResult<IEnumerable<BookListDto>> GetBooks([FromQuery] List<int> genreIds, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
+        public async Task<ActionResult<IEnumerable<BookListDTo>>> GetBooks([FromQuery] int? genreId, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
         {
-            IQueryable<Book> query = libraryDbContext.Livres; 
-            if (offset >= 0 && limit <= 100) 
+            // Ici je verifie la validité pour  offset et limit
+            if (offset < 0 || limit > 100)
             {
-                if (genreIds.Any()) // Vérifie s'il y a des IDs de genre
-                {
-                    query = query.Where(b => b.Genres.Any(g => genreIds.Contains(g.Id)));
-                }
-
-                var books = query
-                            .Include(b => b.Genres)
-                            .OrderBy(b => b.Id)
-                            .Skip(offset)
-                            .Take(limit)
-                            .ProjectTo<BookListDto>(mapper.ConfigurationProvider) // Utilisez BookListDto ici
-                            .ToList();
-
-                return Ok(books);
+                return BadRequest("Offset must be >= 0 and limit must be <= 100.");
             }
-            else
+
+            // Pour charger tous les livres et inclure les genres
+            var booksQuery = libraryDbContext.Livres
+                                             .Include(b => b.Genres)
+                                             .AsEnumerable(); 
+
+            // Filtrage par genre
+            if (genreId.HasValue)
             {
-                return BadRequest("Offset and limit are not valid");
+                booksQuery = booksQuery.Where(b => b.Genres.Any(g => g.Id == genreId.Value));
             }
+
+            // Application de la pagination et du filtrage...
+            var books = booksQuery.Skip(offset).Take(limit).ToList();
+
+            // Mappage des livres vers BookListDTo
+            var booksDtos = mapper.Map<List<BookListDTo>>(books);
+
+            // Total des livres après filtrage mais avant pagination
+            int totalBooks = booksQuery.Count();
+
+            // Ici j'ajoute les headers de pagination
+            int endIndex = Math.Min(offset + limit - 1, totalBooks - 1);
+            Response.Headers.Append("Pagination", $"{offset}-{endIndex}/{totalBooks}");
+
+            return Ok(booksDtos);
         }
+
 
 
 

@@ -2,7 +2,7 @@
 
 namespace ASP.Server.Dtos
 {
-    public class BookListDto
+    public class BookListDTo
     {
         public int Id { get; set; }
         public string Nom { get; set; }
