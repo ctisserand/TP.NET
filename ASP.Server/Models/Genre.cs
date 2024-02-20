@@ -12,13 +12,12 @@ namespace ASP.Server.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Le nom du genre est requis.")]
-        public String Name { get; set; }
-        public List<Book> Books { get; set; }
+        public String Nom { get; set; }
+        public List<Book> Livres { get; set; }
 
         public Genre() {
-            Books = new List<Book>();
+            Livres = new List<Book>();
         }
-
     }
 
 }
