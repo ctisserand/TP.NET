@@ -26,7 +26,7 @@ namespace ASP.Server.Database
             );
             bookDbContext.SaveChanges();
 
-            // Une fois les moèles complété Vous pouvez faire directement
+            // Une fois les modèles complété Vous pouvez faire directement
             // new Book() { Author = "xxx", Name = "yyy", Price = n.nnf, Content = "ccc", Genres = new() { Romance, Thriller } }
             bookDbContext.Books.AddRange(
                 new Book() { },
