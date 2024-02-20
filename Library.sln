@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig.inferred = .editorconfig.inferred
 		ASP.Server\ASP.Server.csproj = ASP.Server\ASP.Server.csproj
 		README.md = README.md
-		WPF.Reader\WPF.Reader.csproj = WPF.Reader\WPF.Reader.csproj
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP.Server", "ASP.Server\ASP.Server.csproj", "{3D16FB0C-4F0A-4DA0-A4CC-FA9C75753408}"

@@ -22,14 +22,29 @@ label {
 <!-- Voici une facon de faire, mais ce n'est pas la seul, a vous de jouer ! -->
 <form asp-controller="Book" asp-action="Create">
     <div class="input-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" />
+        <label asp-for="Title"></label>
+        <input asp-for="Title" />
+        <label asp-for="Price"></label>
+        <input asp-for="Price" />
+        <label asp-for="Content"></label>
+        <input asp-for="Content" />
     </div>
-    <span asp-validation-for="Name" class="text-danger"></span>
+    
+    <span asp-validation-for="Title" class="text-danger"></span>
+    <span asp-validation-for="Price" class="text-danger"></span>
+    <span asp-validation-for="Content" class="text-danger"></span>
+    
+    <div class="input-group">
+        <label asp-for="Authors"></label>
+        <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
+        <select asp-for="Authors" asp-items="@(new SelectList(Model.AllAuthors,"Id","Name"))">
+        </select>
+    </div>
+    <span asp-validation-for="Authors" class="text-danger"></span>
     <div class="input-group">
         <label asp-for="Genres"></label>
         <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
-        <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Id"))">
+        <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Name"))">
         </select>
     </div>
     <span asp-validation-for="Genres" class="text-danger"></span>

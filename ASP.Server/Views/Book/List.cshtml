@@ -3,12 +3,28 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
 <div class="listeBooks">
     <h1>Liste des livres:</h1>
     <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
     @foreach (var book in Model)
     {
+        <div class="book">
+            <h2>@book.Title</h2>
+            <p>@book.Price</p>
+            <p>@book.Content</p>
+        </div>
+        @foreach(var author in book.Authors)
+        {
+            <div class="author">
+                <h3>@author.Name</h3>
+            </div>
+        }
+        @foreach(var genre in book.Genres)
+        {
+            <div class="genre">
+                <h3>@genre.Name</h3>
+            </div>
+        }
     }
 </div>
 

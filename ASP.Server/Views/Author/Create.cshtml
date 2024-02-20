@@ -1,0 +1,37 @@
+@using ASP.Server.Controllers
+@using ASP.Server.ViewModels
+@model CreateAuthorViewModel
+@{
+    ViewData["Title"] = "Add a genre";
+}
+<style>
+.input-group {
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+input, textarea, select {
+    flex-basis:85%;
+}
+label {
+    flex-basis:10%;
+}
+</style>
+
+<!-- Voici une facon de faire, mais ce n'est pas la seul, a vous de jouer ! -->
+<form asp-controller="Author" asp-action="Create">
+    <div class="input-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+    <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="input-group">
+        <label asp-for="Books"></label>
+        <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
+        <select asp-for="Books" asp-items="@(new SelectList(Model.AllBooks,"Id","Title"))">
+        </select>
+    </div>
+    <span asp-validation-for="Books" class="text-danger"></span>
+    <input type="submit" value="Add" style="width: 100%; margin-top: 50px" />
+</form>

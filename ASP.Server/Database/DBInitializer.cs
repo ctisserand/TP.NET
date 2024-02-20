@@ -18,24 +18,36 @@ namespace ASP.Server.Database
                 return;
 
             Genre SF, Classic, Romance, Thriller;
-            bookDbContext.Genre.AddRange(
-                SF = new Genre(),
-                Classic = new Genre(),
-                Romance = new Genre(),
-                Thriller = new Genre()
+            bookDbContext.Genres.AddRange(
+                SF = new Genre() { Name = "SF" },
+                Classic = new Genre() { Name = "Classic" },
+                Romance = new Genre() { Name = "Romance" },
+                Thriller = new Genre() { Name = "Thriller" }
+            );
+            bookDbContext.SaveChanges();
+            
+            Author JJ, JKR, JRR , JP;
+            bookDbContext.Authors.AddRange(
+                JJ = new Author(){Name = "James Joyce" },
+                JKR = new Author(){Name = "J.K. Rowling" },
+                JRR = new Author(){Name = "J.R.R. Tolkien" },
+                JP = new Author(){Name = "Jean-Pierre" }
             );
             bookDbContext.SaveChanges();
 
             // Une fois les moèles complété Vous pouvez faire directement
             // new Book() { Author = "xxx", Name = "yyy", Price = n.nnf, Content = "ccc", Genres = new() { Romance, Thriller } }
             bookDbContext.Books.AddRange(
-                new Book() { },
-                new Book() {Author = "xxx", Title = "yyy", Price = 12.34, Content = "ccc", Genres = new() { Romance, Thriller } },
-                new Book() {Author = "Super Author", Title = "Super Title", Price = 12.34, Content = "Super Content", Genres = new() { Romance, Thriller } },
-                new Book() {Author = "bad Author", Title = "bad Title", Price = 12.34, Content = "bad Content", Genres = new() { Romance, Thriller } }
+                new Book() { Authors = new () {JJ}, Title = "Ulysse", Price = 10.99,
+                    Content = "Le contenu de Ulysse", Genres = new() { Thriller } },
+                new Book() { Authors = new () {JKR} , Title = "MOMO", Price = 10.99,
+                    Content = "Le contenu de MOMO", Genres = new() { Classic } },
+                new Book() { Authors = new () {JRR}, Title = "ToTo", Price = 10.99,
+                    Content = "Le contenu de ToTo", Genres = new() { SF } },
+                new Book() { Authors = new () {JP}, Title = "TiTi", Price = 10.99,
+                    Content = "Le contenu de TiTi", Genres = new() { Romance } }
             );
             // Vous pouvez initialiser la BDD ici
-
             bookDbContext.SaveChanges();
         }
     }

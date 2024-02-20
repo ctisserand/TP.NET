@@ -102,8 +102,8 @@ Un utilisateur doit pouvoir :
 - Modifier un livre existant
 
 Options :
-- Remplacer le champs autheur (de type string) de la classe livre par une laison vers une classe Autheur
-  - On considère qu'un livre n'a qu'un seul et unique autheur (même si dans la réalité ce n'est pas vraix)
+- Remplacer le champs auteur (de type string) de la classe livre par une laison vers une classe Auteur
+  - Un livre peut evoir plusieur autheur
   - La class autheur à besoin d'au minimum du nom de l'autheur
 - Afficher des filtres dans la liste des livres pour filtrer par autheurs / genres
 - Une page affichants les statistiques sur :
