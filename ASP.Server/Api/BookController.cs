@@ -13,40 +13,12 @@ using AutoMapper.QueryableExtensions;
 
 namespace ASP.Server.Api
 {
-
     [Route("/api/[controller]/[action]")]
     [ApiController]
     public class BookController(LibraryDbContext libraryDbContext, IMapper mapper) : ControllerBase
     {
         private readonly LibraryDbContext libraryDbContext = libraryDbContext;
         private readonly IMapper mapper = mapper;
-        
-        
-        [HttpGet("/api/[controller]/[action]/GetBooks")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<BookDto>> GetBooks()
-        {
-            return mapper.Map<List<BookDto>>(libraryDbContext.Books);
-        }
-        
-        [HttpGet("/api/[controller]/[action]/GetBook")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<BookDto> GetBook(int id)
-        {
-            return libraryDbContext.Books.
-                Where(x => x.Id == id).ProjectTo<BookDto>(mapper.ConfigurationProvider).FirstOrDefault();
-        }
-        
-        [HttpGet("/api/[controller]/[action]/GetGenres")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<GenreDto>> GetGenres()
-        {
-            return mapper.Map<List<GenreDto>>(libraryDbContext.Genre);
-        }
-        
 
         // Methode a ajouter : 
         // - GetBooks
@@ -88,17 +60,39 @@ namespace ASP.Server.Api
         //      this.mapper.Map<List<ItemDto>>(my_array);
 
         // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
-        /*
-        public ActionResult<IEnumerable<BookDto>> GetBooks()
+        [HttpGet("/api/book")]
+        public async Task<ActionResult<IEnumerable<BookWContentDto>>> GetBooks([FromQuery] List<int>? genreIds = null,
+            [FromQuery] int limit = 10, [FromQuery] int offset = 0)
         {
+            var query = libraryDbContext.Books.AsQueryable();
+            if (genreIds != null && genreIds.Count > 0)
+            {
+                query = query.Where(b => b.Genres.Any(bg => genreIds.Contains(bg.Id)));
+            }
+
+            var books = await query.Skip(offset).Take(limit).ProjectTo<BookWContentDto>(mapper.ConfigurationProvider).ToListAsync();
+            return Ok(books);
             // Exemple sans dependence externe
-            // return libraryDbContext.Books.Select(b => new BookDto { Id = b.Id });
+            // return libraryDbContext.Books.Select(b => new BookDto { Id = b.Id });|||
             // Exemple avec AutoMapper
             // return mapper.Map<List<BookDto>>(libraryDbContext.Books);
             throw new NotImplementedException("You have to do it your self");
         }
-        */
+        
+        [HttpGet("/api/book/{id}")]
+        public ActionResult<BookDto> GetBook(int id)
+        {
+            var book = libraryDbContext.Books.Where(b => b.Id == id).ProjectTo<BookDto>(mapper.ConfigurationProvider).FirstOrDefault();
+            return Ok(book);
+            throw new NotImplementedException("You have to do it your self");
+        }
 
+        [HttpGet("/api/genres")]
+        public ActionResult<IEnumerable<GenreDto>> GetGenres()
+        {
+            var genres = libraryDbContext.Genre.ProjectTo<GenreDto>(mapper.ConfigurationProvider).ToListAsync();
+            return Ok(genres);
+            throw new NotImplementedException("You have to do it your self");
+        }
     }
 }
-
