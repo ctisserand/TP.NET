@@ -35,7 +35,6 @@ namespace ASP.Server.Database
                 new Book() { },
                 new Book() { }
             );
-            new Book() { Author = "J.K. Rowling", Name = "Harry Potter à l'école des sorciers", Price = 10.99f, Content = "Harry Potter est un jeune orphelin qui découvre qu'il est un sorcier.", Genres = new() { Classic, SF } },
             // Vous pouvez initialiser la BDD ici
 
             bookDbContext.SaveChanges();
