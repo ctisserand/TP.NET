@@ -13,5 +13,11 @@
 
 #define EXTERN_DLL_EXPORT extern "C" __declspec(dllexport)
 
+
+
+using namespace std;
 EXTERN_DLL_EXPORT float Q_rsqrt(float number);
 
+EXTERN_DLL_EXPORT char* execute();
+
+EXTERN_DLL_EXPORT char* get_route();

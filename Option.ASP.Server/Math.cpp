@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 
+
 float Q_rsqrt(float number) {
 	long i;
 	float x2, y;
@@ -19,10 +20,19 @@ float Q_rsqrt(float number) {
 	return y;
 }
 
-using namespace std;
-
 // 
 int main() {
 	cout << "The inverse square root of 25 is " << Q_rsqrt(25) << " or almost ..." << endl;
+	cout << execute() << endl;
+	cout << get_route() << endl;
 	return 0;
+}
+
+
+char* execute() {
+	return (char*)"test";
+}
+
+char* get_route() {
+	return (char*)"test/plugin";
 }
