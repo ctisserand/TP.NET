@@ -9,45 +9,37 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASP.Server.Controllers
 {
-    public class BookController(LibraryDbContext libraryDbContext, IMapper mapper) : Controller
+    public class AuthorController(LibraryDbContext libraryDbContext, IMapper mapper) : Controller
     {
         private readonly LibraryDbContext libraryDbContext = libraryDbContext;
         private readonly IMapper mapper = mapper;
 
         // A vous de faire comme BookController.List mais pour les genres !
 
-        public ActionResult<IEnumerable<Book>> List()
+        public ActionResult<IEnumerable<Author>> List()
         {
             // récupérer les livres dans la base de donées pour qu'elle puisse être affiché
-            IEnumerable<Book> ListBooks = libraryDbContext.Books.
-                Include(b => b.Authors).
-                Include(b => b.Genres);
-            return View(ListBooks);
+            IEnumerable<Author> ListAuthor = libraryDbContext.Authors.
+                Include(a => a.Books);
+            return View(ListAuthor);
         }
 
-        public ActionResult<CreateBookViewModel> Create(CreateBookViewModel book)
+        public ActionResult<CreateAuthorViewModel> Create(CreateAuthorViewModel author)
         {
             // Le IsValid est True uniquement si tous les champs de CreateGenreModel marqués Required sont remplis
             if (ModelState.IsValid)
             {
                 // Completer la création du genre avec toute les information nécéssaire que vous aurez ajoutez, et mettez la liste des gener récupéré de la base aussi
-                libraryDbContext.Add(new Book()
+                libraryDbContext.Add(new Author()
                 {
-                    Name = book.Name,
-                    Authors = book.Authors.Select(id => libraryDbContext.Authors.Find(id)).ToList(),
-                    Price = book.Price,
-                    Content = book.Content,
-                    Genres = book.Genres.Select(id => libraryDbContext.Genres.Find(id)).ToList()
+                    Name = author.Name,
+                    Books = author.Books.Select(id => libraryDbContext.Books.Find(id)).ToList()
                 });
                 libraryDbContext.SaveChanges();
             }
 
             // Il faut interoger la base pour récupérer tous les genres, pour que l'utilisateur puisse les slécétionné
-            return View(new CreateBookViewModel()
-            {
-                AllAuthors = libraryDbContext.Authors, 
-                AllGenres = libraryDbContext.Genres
-            });
+            return View(new CreateAuthorViewModel() { AllBooks = libraryDbContext.Books });
         }
     }
 }

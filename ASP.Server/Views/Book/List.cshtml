@@ -6,9 +6,47 @@
 
 <div class="listeBooks">
     <h1>Liste des livres:</h1>
-    <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
-    @foreach (var book in Model)
-    {
-    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Prix</th>
+                <th>Contenu</th>
+                <th>Auteurs</th>
+                <th>Genres</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Id</td>
+                    <td>@book.Title</td>
+                    <td>@book.Price</td>
+                    <td>@book.Content</td>
+                    <td>
+                        @foreach (var author in book.Authors)
+                        {
+                            <span>@author.Name</span>
+
+                        }
+                    </td>
+                    <td>
+                        @foreach (var genre in book.Genres)
+                        {
+                            <span>@genre.Name</span>
+
+                        }
+                    </td>
+                    <td>
+                      <button onclick="window.location.href='/Book/Edit/@(book.Id)';"  type="button" class="btn btn-primary">Edit</button>
+                      <button type="button"  onclick="window.location.href='/Book/Delete/@(book.Id)';" class="btn btn-danger">Supprimer</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 

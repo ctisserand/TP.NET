@@ -1,0 +1,32 @@
+@using ASP.Server.Models
+@model IEnumerable<Author>
+@{
+    ViewData["Title"] = "Liste des Auteurs";
+}
+
+<div class="listeAuthors">
+    <h1>Liste des Auteurs:</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom de l'Auteur</th>
+                <th>Titres des Livres</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var author in Model)
+            {
+                <tr>
+                    <td>@author.Name</td>
+                    <td>
+                        @foreach (var book in author.Books)
+                        {
+                            <span>@book.Title</span>
+
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

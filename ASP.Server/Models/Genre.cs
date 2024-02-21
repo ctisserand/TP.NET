@@ -11,6 +11,8 @@ namespace ASP.Server.Models
 
         [Key]
         public int Id { get; set; }
+        public string Name { get; set; }
+        public List<Book> Books { get; set; }
 
         // Mettez ici les propriété de votre livre: Nom et Livres associés
 
@@ -18,4 +20,3 @@ namespace ASP.Server.Models
     }
 
 }
-
