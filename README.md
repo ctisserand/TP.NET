@@ -129,13 +129,15 @@ Cette api doit permettre de :
 - Lister les livres (sans le contenu)
 
 Options:
-- Utiliser un plugin pour changer le format de sortie
+- Ajouter un système pour charger des plugins
+    - Le plugin doit pouvoir permettre d'ajouter une route a votre serveur !
+    - Vous aurez autant de nouvelle route que de plugin installé
     - le plugin ne doit pas faire partie de la solution. Il doit etre charger à partir d'un dossier en contenant plusieurs.
     - Mettez a disposition un moyen pour pouvoir créer un nouveau plugin compatible avec votre solution
     - Vous ne conaissez pas la liste des plugins en avance, il doivent être chargés dynamiquement
-    - les paramètres de l'API permettent de choisir le plugin a utiliser (/book/{id}?output=xxx)
+    - Pensez a géré les conflits entre les routes des différent plugins
     - Pas de package exterieur autorisé !
-- Faite pareil mais avec des plugins codés dans un language compilé (C, C++, RUST, ...)
+- Faite pareil mais avec des plugins codés dans un language compilé (C, C++, RUST, ...) (utilisé la branche options disponible sur ce GIT pour avoir un exemple : Option.ASP.Server)
 - Rajouter la possibilité de décharger la DLL
 
 ## Récupérer un livre avec son contenu : /book/{id} 
