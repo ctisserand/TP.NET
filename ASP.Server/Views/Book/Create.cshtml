@@ -51,7 +51,7 @@
 
     <div class="input-group">
         <label asp-for="Genres">Genres</label>
-       <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Name"))" class="form-control" multiple="multiple"></select>
+       <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Nom"))" class="form-control" multiple="multiple"></select>
         <span asp-validation-for="Genres" class="text-danger"></span>
     </div>
 

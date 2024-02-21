@@ -7,14 +7,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using ASP.Server.Models;
 
 namespace ASP.Server.Controllers
 {
-    public class GenreController(LibraryDbContext libraryDbContext, IMapper mapper) : Controller
+    public class GenreController : Controller
     {
-        private readonly LibraryDbContext libraryDbContext = libraryDbContext;
-        private readonly IMapper mapper = mapper;
+        private readonly LibraryDbContext _libraryDbContext;
 
-        // A vous de faire comme BookController.List mais pour les genres !
+        public GenreController(LibraryDbContext libraryDbContext)
+        {
+            _libraryDbContext = libraryDbContext;
+        }
+
+        //lister les genres
+        public IActionResult List()
+        {
+            var genres = _libraryDbContext.Genres.ToList();
+            return View(genres);
+        }
+
+        //formulaire pour ajouter un nouveau genre
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // Fonction pour ajouter un nouveau genre
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CreateGenreViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var genre = new Genre
+                {
+                    Nom = viewModel.Nom
+                };
+
+                _libraryDbContext.Genres.Add(genre);
+                _libraryDbContext.SaveChanges();
+                return RedirectToAction(nameof(List));
+            }
+            // Si le formulaire n'est pas valide, on retourne à la vue
+            return View(viewModel);
+        }
     }
 }

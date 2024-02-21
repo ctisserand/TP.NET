@@ -43,7 +43,7 @@ namespace ASP.Server.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateBookViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var book = new Book
                 {

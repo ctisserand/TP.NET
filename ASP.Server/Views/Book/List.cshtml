@@ -1,14 +1,42 @@
 ﻿@using ASP.Server.Models
 @model IEnumerable<Book>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Liste des livres";
 }
 
 <div class="listeBooks">
-    <h1>Liste des livres:</h1>
-    <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
-    @foreach (var book in Model)
-    {
-    }
+    <h1>@ViewData["Title"]</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Auteur</th>
+                <th>Prix</th>
+                <th>Genres</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Id</td>
+                    <td>@book.Nom</td>
+                    <td>@book.Auteur</td>
+                    <td>@String.Format("{0:0.00}", book.Prix)</td>
+                    <td>
+                        @foreach (var genre in book.Genres)
+                        {
+                            <span>@genre.Nom </span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@book.Id">Modifier</a> |
+                        <a asp-action="Delete" asp-route-id="@book.Id">Supprimer</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
-
