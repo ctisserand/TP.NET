@@ -4,19 +4,75 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF.Reader"
-        xmlns:model="clr-namespace:WPF.Reader.ViewModel" d:DataContext="{d:DesignInstance Type=model:Navigator, IsDesignTimeCreatable=True}"
+        xmlns:model="clr-namespace:WPF.Reader.ViewModel"
         mc:Ignorable="d"
         DataContext="{DynamicResource navigator}"
-    Title="MainWindow" Height="700" Width="800">
+        Title="MainWindow" Height="700" Width="800" Background="Black">
     <Window.Resources>
         <model:Navigator x:Key="navigator" />
     </Window.Resources>
+
     <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Label DockPanel.Dock="Top" Content="Librairie" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="30px"/>
-        <Grid DockPanel.Dock="Bottom">
-            <TextBlock>Ce block devrais toujours être la</TextBlock>
-            <Button Command="{Binding Path=GoToHomeCommand}" Width="50" Content="Accueil" HorizontalContentAlignment="Center" HorizontalAlignment="Right"/>
+
+        <!-- Pied de page avec icônes -->
+        <Grid DockPanel.Dock="Bottom" Background="#333" Height="60">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Icône maison -->
+            <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="&#x2302;" FontSize="20" Foreground="Yellow" HorizontalAlignment="Center"/>
+                <TextBlock Text="Accueil" FontSize="12" Foreground="Yellow" HorizontalAlignment="Center" FontFamily="Times New Roman"/>
+            </StackPanel>
+
+            <!-- Icône livre -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="&#x1f4d5;" FontSize="20" Foreground="Yellow" HorizontalAlignment="Center"/>
+                <TextBlock Text="Bibliothèque" FontSize="12" Foreground="Yellow" HorizontalAlignment="Center" FontFamily="Times New Roman"/>
+            </StackPanel>
+
+            <!-- Icône genres -->
+            <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="&#x1f4f0;" FontSize="20" Foreground="Yellow" HorizontalAlignment="Center"/>
+                <TextBlock Text="Genres" FontSize="12" Foreground="Yellow" HorizontalAlignment="Center" FontFamily="Times New Roman"/>
+            </StackPanel>
+
+            <!-- Icône profil -->
+            <StackPanel Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="&#xE13D;" FontSize="20" Foreground="Yellow" HorizontalAlignment="Center" FontFamily="Segoe UI Symbol"/>
+                <TextBlock Text="Profil" FontSize="12" Foreground="Yellow" HorizontalAlignment="Center" FontFamily="Times New Roman"/>
+            </StackPanel>
         </Grid>
-        <ContentPresenter  Content="{Binding Path=Frame}" x:Name="Navigation"/>
+
+        <!-- Header -->
+        <Border DockPanel.Dock="Top" Background="Black" Height="60" BorderBrush="Yellow" BorderThickness="0,0,0,1">
+            <TextBlock Text="Librairiz" Foreground="Yellow" FontSize="34" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Times New Roman"/>
+        </Border>
+        
+        
+
+        <!-- Barre de recherche -->
+        <Border DockPanel.Dock="Top" Background="Black" Height="50" VerticalAlignment="Center" CornerRadius="8" Margin="10">
+            <Grid Background="#222" Margin="93,0,95,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="&#x1F50D;" FontSize="20" VerticalAlignment="Center" Margin="10,0" Foreground="Gray"/>
+                <TextBox Grid.Column="1" FontSize="16" Foreground="Gray" Background="#222" BorderThickness="0" Text="Cherchez un titre, un auteur..." HorizontalAlignment="Stretch" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Times New Roman" Padding="10,0" />
+            </Grid>
+        </Border>
+        <!-- Titre "A la une" -->
+        <Label DockPanel.Dock="Top" Content="A la une" FontSize="16" Margin="10" HorizontalAlignment="Left" Foreground="Yellow" FontWeight="Bold" FontFamily="Times New Roman"/>
+
+        <!-- Contenu principal, tel que la grille de livres -->
+        <ContentPresenter DockPanel.Dock="Top" Content="{Binding Path=Frame}" x:Name="Navigation"/>
+
+       
+        
     </DockPanel>
 </Window>

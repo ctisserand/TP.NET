@@ -12,17 +12,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPF.Reader.Service;
 
 namespace WPF.Reader.Pages
 {
-    /// <summary>
-    /// Interaction logic for DetailsBook.xaml
-    /// </summary>
     public partial class DetailsBook : Page
     {
+        //
+        private readonly LibraryService _libraryService = new LibraryService();
+
         public DetailsBook()
         {
             InitializeComponent();
+            //Ajout de la possibilité de loader des livres 
+            Loaded += Page_Loaded;
+            //this.DataContext = new ViewModel.DetailsBook();
+        }
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Chargement des livres de manière asynchrone
+            await _libraryService.FetchBooksAsync();
+
         }
     }
 }

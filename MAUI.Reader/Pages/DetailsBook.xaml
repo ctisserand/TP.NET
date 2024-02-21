@@ -16,8 +16,23 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!-- il faut afficher les information du livre: Nom, Auteur, Prix, Genres-->
-        <!-- Mais pas le contenu ! -->
-        <!-- N'oublier pas le bouton pour aller lire le livre. La commande ReadCommand est faite pour ca ! -->
+
+        <!-- Nom du livre -->
+        <Label Grid.Row="0" Text="{Binding CurrentBook.Nom}" FontSize="Large" />
+
+        <!-- Auteur du livre -->
+        <Label Grid.Row="1" Text="{Binding CurrentBook.Auteur}" FontSize="Medium" />
+
+        <!-- Prix du livre -->
+        <Label Grid.Row="2" Text="{Binding CurrentBook.Prix, StringFormat='Prix: {0:C}'}" FontSize="Medium" />
+
+        <!-- Genres du livre -->
+        <!-- Supposons que vous avez une propriété GenreNames dans votre ViewModel qui est une chaîne de tous les noms de genres -->
+        <Label Grid.Row="3" Text="{Binding CurrentBook.Genre}" FontSize="Medium" />
+
+        <!-- Bouton pour lire le livre -->
+        <Button Grid.Row="4" Text="Lire le livre" Command="{Binding ReadCommand}" VerticalOptions="End" />
+
+   
     </Grid>
 </ContentPage>
