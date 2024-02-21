@@ -10,7 +10,7 @@ namespace ASP.Server.ViewModels
     public class CreateBookViewModel
     {
         [Required]
-        public String Title { get; set; }
+        public String Name { get; set; }
         // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
         [Required(ErrorMessage = "You need at least 1 author"), MinLength(1)]
         public IEnumerable<int> Authors { get; set; }

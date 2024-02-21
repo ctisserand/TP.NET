@@ -33,7 +33,7 @@ namespace ASP.Server.Controllers
                 // Completer la création du genre avec toute les information nécéssaire que vous aurez ajoutez, et mettez la liste des gener récupéré de la base aussi
                 libraryDbContext.Add(new Book()
                 {
-                    Title = book.Title,
+                    Name = book.Name,
                     Authors = book.Authors.Select(id => libraryDbContext.Authors.Find(id)).ToList(),
                     Price = book.Price,
                     Content = book.Content,

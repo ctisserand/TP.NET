@@ -61,7 +61,7 @@ namespace ASP.Server.Api
 
         // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
         [HttpGet("/api/book")]
-        public async Task<ActionResult<IEnumerable<BookWContentDto>>> GetBooks([FromQuery] List<int>? genreIds = null,
+        public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks([FromQuery] List<int>? genreIds = null,
             [FromQuery] int limit = 10, [FromQuery] int offset = 0)
         {
             var query = libraryDbContext.Books.AsQueryable();
@@ -70,7 +70,12 @@ namespace ASP.Server.Api
                 query = query.Where(b => b.Genres.Any(bg => genreIds.Contains(bg.Id)));
             }
 
-            var books = await query.Skip(offset).Take(limit).ProjectTo<BookWContentDto>(mapper.ConfigurationProvider).ToListAsync();
+            var books = await query.
+                Skip(offset).
+                Take(limit).
+                ProjectTo<BookWithoutContentDto>(mapper.ConfigurationProvider).
+                ToListAsync();
+            
             return Ok(books);
             // Exemple sans dependence externe
             // return libraryDbContext.Books.Select(b => new BookDto { Id = b.Id });|||
@@ -80,17 +85,23 @@ namespace ASP.Server.Api
         }
         
         [HttpGet("/api/book/{id}")]
-        public ActionResult<BookDto> GetBook(int id)
+        public async Task<ActionResult<BookDto>> GetBook(int id)
         {
-            var book = libraryDbContext.Books.Where(b => b.Id == id).ProjectTo<BookDto>(mapper.ConfigurationProvider).FirstOrDefault();
+            var book = await libraryDbContext.Books.
+                Where(b => b.Id == id).
+                ProjectTo<BookWithoutAuthorsDto>(mapper.ConfigurationProvider).
+                FirstOrDefaultAsync();
+            
             return Ok(book);
             throw new NotImplementedException("You have to do it your self");
         }
 
         [HttpGet("/api/genres")]
-        public ActionResult<IEnumerable<GenreDto>> GetGenres()
+        public async Task<ActionResult<IEnumerable<GenreDto>>> GetGenres()
         {
-            var genres = libraryDbContext.Genres.ProjectTo<GenreDto>(mapper.ConfigurationProvider).ToListAsync();
+            var genres = await libraryDbContext.Genres.
+                ProjectTo<GenreWithoutBooksDto>(mapper.ConfigurationProvider).
+                ToListAsync();
             return Ok(genres);
             throw new NotImplementedException("You have to do it your self");
         }
