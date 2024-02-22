@@ -1,5 +1,10 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
+using WPF.Reader.Service;
+using WPF.Reader.ViewModel;
 
 namespace WPF.Reader
 {
@@ -8,12 +13,11 @@ namespace WPF.Reader
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
-            InitializeComponent();
             // Naviguation vers la page ListBooks au démarrage pour afficher la liste des livres
-            MainFrame.Navigate(new Uri("Pages/ListBooks.xaml", UriKind.Relative));
-
+            Ioc.Default.GetService<INavigationService>().Navigate<ListBook>();
         }
     }
 }

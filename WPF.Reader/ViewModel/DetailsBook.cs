@@ -11,6 +11,10 @@ namespace WPF.Reader.ViewModel
         //Déclenché chaque fois qu'une propriété du ViewModel change
         public event PropertyChangedEventHandler PropertyChanged;
 
+        //Ici, on récupère le livre en cours, soit CurrentBook
+        public Book CurrentBook { get; init; } = book;
+
+
         // Une commande permet de recevoir des évènement de l'IHM
         //RelayCommand permet de prendre une action en paramètre
         //Donc ici, on récupère l'action de l'utilisateur (par exemple, s'il clique sur un bouton) et on détermine le comportement de l'application
@@ -21,10 +25,6 @@ namespace WPF.Reader.ViewModel
         public void ReadBook(Book book)
         {
         }
-
-        // n'oublier pas faire de faire le binding dans DetailsBook.xaml !!!!
-        //Ici, on récupère le livre en cours, soit CurrentBook
-        public Book CurrentBook { get; init; } = book;
     }
     public class InDesignDetailsBook : DetailsBook
     {
