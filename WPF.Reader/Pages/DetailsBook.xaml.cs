@@ -12,12 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPF.Reader.Model;
+using WPF.Reader.Service;
 
 namespace WPF.Reader.Pages
 {
-    /// <summary>
-    /// Interaction logic for DetailsBook.xaml
-    /// </summary>
     public partial class DetailsBook : Page
     {
         public DetailsBook()

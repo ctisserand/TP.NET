@@ -1,0 +1,41 @@
+﻿@using ASP.Server.ViewModels
+@model CreateGenreViewModel
+
+
+<style>
+    .form-group {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    input{
+        flex-basis: 85%;
+    }
+
+    label {
+        flex-basis: 10%;
+    }
+</style>
+
+@{
+    ViewData["Title"] = "Ajouter un genre";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="Genre" asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Nom">Nom du genre</label>
+        <input asp-for="Nom" class="form-control" />
+        <span asp-validation-for="Nom" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

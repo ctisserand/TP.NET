@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using Windows.Web.Http;
@@ -10,21 +13,84 @@ namespace WPF.Reader.Service
 {
     public class LibraryService
     {
-        // A remplacer avec vos propre données !!!!!!!!!!!!!!
-        // Pensé qu'il ne faut mieux ne pas réaffecter la variable Books, mais juste lui ajouter et / ou enlever des éléments
-        // Donc pas de LibraryService.Instance.Books = ...
-        // mais plutot LibraryService.Instance.Books.Add(...)
-        // ou LibraryService.Instance.Books.Clear()
-        public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>() {
-            new Book(),
-            new Book(),
-            new Book()
-        };
+        //Création de la possibilité de faire des requêtes HTTP pour récupérer les livres depuis l'API web
+        private readonly HttpClient _httpClient = new HttpClient();
 
-        // C'est aussi ici que vous ajouterez les requête réseau pour récupérer les livres depuis le web service que vous avez fait
-        // Vous pourrez alors ajouter les livres obtenu a la variable Books !
-        // Faite bien attention a ce que votre requête réseau ne bloque pas l'interface 
+        //Création d'un observable 
+        public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>() {};
+
         public LibraryService() {
+            UpdateBooks();
+        }
+
+        public void UpdateBooks()
+        {
+            Task.Run(async () => await FetchBooksAsync());
+        }
+
+
+        public async Task FetchBookDetails(int bookId)
+        {
+            try
+            {
+                string url = $"https://localhost:5001/api/Book/GetBook/{bookId}"; // Récupération d'un seul livre
+                Uri uri = new Uri(url); // Création d'un objet URI
+                var response = await _httpClient.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    // Lecture des données récupérées
+                    var json = await response.Content.ReadAsStringAsync();
+                    // Transformation des données récupérées JSON en objet Book
+                    var details = JsonConvert.DeserializeObject<Book>(json);
+                }
+                else
+                {
+                    // Gérer la réponse HTTP non réussie ici (par exemple, statut 404 ou 500)
+                    Console.WriteLine($"Erreur HTTP : {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Gérer l'exception (par exemple, en affichant un message d'erreur)
+                Console.WriteLine(ex.Message);
+            }
+
+
+        }
+
+        public async Task FetchBooksAsync()
+        {
+            try
+            {
+                string url = "https://localhost:5001/api/Book/GetBooks"; // Récupération de tous les livres
+                Uri uri = new Uri(url); //Création d'un objet URI
+                var response = await _httpClient.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    //Lecture des données récupérées
+                    var json = await response.Content.ReadAsStringAsync();
+                    //Transformation des données récupérées JSON en listes d'objets
+                    var books = JsonConvert.DeserializeObject<List<Book>>(json);
+                    if (books != null)
+                    {
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            Books.Clear();
+                            foreach (var book in books)
+                            {
+                                //Ajout des livres dans notre liste d'objets
+                                Books.Add(book);
+                            }
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Gérer l'exception (par exemple, en affichant un message d'erreur)
+                Console.WriteLine(ex.Message);
+            }
         }
     }
+
 }

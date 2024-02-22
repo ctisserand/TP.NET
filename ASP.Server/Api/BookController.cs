@@ -23,18 +23,77 @@ namespace ASP.Server.Api
 
         // Methode a ajouter : 
         // - GetBooks
-        //   - Entrée: Optionel -> Liste d'Id de genre, limit -> defaut à 10, offset -> défaut à 0
-        //     Le but de limit et offset est dé créer un pagination pour ne pas retourner la BDD en entier a chaque appel
-        //   - Sortie: Liste d'object contenant uniquement: Auteur, Genres, Titre, Id, Prix
-        //     la liste restourner doit être compsé des élément entre <offset> et <offset + limit>-
-        //     Dans [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] si offset=8 et limit=5, les élément retourner seront : 8, 9, 10, 11, 12
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BookListDTo>>> GetBooks([FromQuery] int? genreId, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
+        {
+            // Ici je verifie la validité pour  offset et limit
+            if (offset < 0 || limit > 100)
+            {
+                return BadRequest("Offset must be >= 0 and limit must be <= 100.");
+            }
+
+            // Pour charger tous les livres et inclure les genres
+            var booksQuery = libraryDbContext.Livres
+                                             .Include(b => b.Genres)
+                                             .AsEnumerable(); 
+
+            // Filtrage par genre
+            if (genreId.HasValue)
+            {
+                booksQuery = booksQuery.Where(b => b.Genres.Any(g => g.Id == genreId.Value));
+            }
+
+            // Application de la pagination et du filtrage...
+            var books = booksQuery.Skip(offset).Take(limit).ToList();
+
+            // Mappage des livres vers BookListDTo
+            var booksDtos = mapper.Map<List<BookListDTo>>(books);
+
+            // Total des livres après filtrage mais avant pagination
+            int totalBooks = booksQuery.Count();
+
+            // Ici j'ajoute les headers de pagination
+            int endIndex = Math.Min(offset + limit - 1, totalBooks - 1);
+            Response.Headers.Append("Pagination", $"{offset}-{endIndex}/{totalBooks}");
+
+            return Ok(booksDtos);
+        }
+
+
+
 
         // - GetBook
         //   - Entrée: Id du livre
+
+        [HttpGet]
+        public ActionResult<BookDto> GetBook([FromQuery] int id)
+        {
+            var book = libraryDbContext.Livres
+                .Include(b => b.Genres)
+                .FirstOrDefault(b => b.Id == id);
+
+            if (book != null)
+            {
+                return Ok(mapper.Map<BookDto>(book));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
         //   - Sortie: Object livre entier
 
         // - GetGenres
         //   - Entrée: Rien
+        [HttpGet]
+        public ActionResult<IEnumerable<GenreDTo>> GetGenres()
+        {
+            var genres = libraryDbContext.Genres
+                .ProjectTo<GenreDTo>(mapper.ConfigurationProvider)
+                .ToList();
+
+            return Ok(genres);
+        }
         //   - Sortie: Liste des genres
 
         // Aide:
@@ -61,7 +120,7 @@ namespace ASP.Server.Api
         //      this.mapper.Map<List<ItemDto>>(my_array);
 
         // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
-        public ActionResult<IEnumerable<BookDto>> GetBooks()
+        /*public ActionResult<IEnumerable<BookDto>> GetBooks()
         {
             // Exemple sans dependence externe
             // return libraryDbContext.Books.Select(b => new BookDto { Id = b.Id });
@@ -69,7 +128,7 @@ namespace ASP.Server.Api
             // return mapper.Map<List<BookDto>>(libraryDbContext.Books);
             throw new NotImplementedException("You have to do it your self");
         }
-
+        */
     }
 }
 

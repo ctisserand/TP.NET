@@ -14,11 +14,22 @@ namespace WPF.Reader.ViewModel
 {
     public partial class ListBook : INotifyPropertyChanged
     {
+        public ListBook()
+        {
+            Task.Run(async () =>
+            {
+                await Ioc.Default.GetService<LibraryService>().FetchBooksAsync();
+
+            });
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         [RelayCommand]
+        //Transition vers le bon fichier xaml
         public void ItemSelected(Book book)
         {
+            // Navigation logic here
+            Ioc.Default.GetService<INavigationService>().Navigate<DetailsBook>(book);
         }
 
         // n'oublier pas faire de faire le binding dans ListBook.xaml !!!!

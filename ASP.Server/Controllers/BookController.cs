@@ -12,29 +12,64 @@ using AutoMapper;
 
 namespace ASP.Server.Controllers
 {
-    public class BookController(LibraryDbContext libraryDbContext, IMapper mapper) : Controller
+    public class BookController : Controller
     {
-        private readonly LibraryDbContext libraryDbContext = libraryDbContext;
+        private readonly LibraryDbContext libraryDbContext;
+        private readonly IMapper mapper;
+
+        public BookController(LibraryDbContext libraryDbContext, IMapper mapper)
+        {
+            this.libraryDbContext = libraryDbContext;
+            this.mapper = mapper;
+        }
 
         public ActionResult<IEnumerable<Book>> List()
         {
-            // récupérer les livres dans la base de donées pour qu'elle puisse être affiché
-            IEnumerable<Book> ListBooks = libraryDbContext.Books;
-            return View(ListBooks);
+            IEnumerable<Book> listBooks = libraryDbContext.Livres.ToList();
+            return View(listBooks);
         }
 
-        public ActionResult<CreateBookViewModel> Create(CreateBookViewModel book)
+        [HttpGet]
+        public ActionResult Create()
         {
-            // Le IsValid est True uniquement si tous les champs de CreateBookModel marqués Required sont remplis
+            var viewModel = new CreateBookViewModel
+            {
+                AllGenres = libraryDbContext.Genres.ToList() ?? new List<Genre>()
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(CreateBookViewModel viewModel)
+        {
             if (ModelState.IsValid)
             {
-                // Completer la création du livre avec toute les information nécéssaire que vous aurez ajoutez, et metter la liste des gener récupéré de la base aussi
-                libraryDbContext.Add(new Book() {  });
+                var book = new Book
+                {
+                    Nom = viewModel.Nom,
+                    Auteur = viewModel.Auteur,
+                    Prix = viewModel.Prix,
+                    Contenu = viewModel.Contenu,
+                    Genres = libraryDbContext.Genres.Where(genre => viewModel.Genres.Contains(genre.Id)).ToList()
+                };
+
+                libraryDbContext.Livres.Add(book);
                 libraryDbContext.SaveChanges();
+                return RedirectToAction(nameof(List));
             }
 
-            // Il faut interoger la base pour récupérer tous les genres, pour que l'utilisateur puisse les slécétionné
-            return View(new CreateBookViewModel() { AllGenres = libraryDbContext.Genre});
+            //Si le modèle n'est pas valide, on le renvoie à la vue
+            var newViewModel = new CreateBookViewModel
+            {
+                Nom = viewModel.Nom,
+                Auteur = viewModel.Auteur,
+                Prix = viewModel.Prix,
+                Contenu = viewModel.Contenu,
+                Genres = viewModel.Genres,
+                AllGenres = libraryDbContext.Genres.ToList() ?? new List<Genre>()
+            };
+            return View(newViewModel);
         }
     }
 }

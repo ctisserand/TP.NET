@@ -1,37 +1,66 @@
-﻿@using ASP.Server.Controllers
-@using ASP.Server.ViewModels
+﻿@using ASP.Server.ViewModels
 @model CreateBookViewModel
+
 @{
-    ViewData["Title"] = "Add a book";
+    ViewData["Title"] = "Ajouter un livre";
 }
+
 <style>
-.input-group {
-    margin-top:10px;
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-}
-input, textarea, select {
-    flex-basis:85%;
-}
-label {
-    flex-basis:10%;
-}
+    .input-group {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    input, textarea, select {
+        flex-basis: 85%;
+    }
+
+    label {
+        flex-basis: 10%;
+    }
 </style>
 
-<!-- Voici une facon de faire, mais ce n'est pas la seul, a vous de jouer ! -->
-<form asp-controller="Book" asp-action="Create">
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="Book" asp-action="Create" method="post">
     <div class="input-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" />
+        <label asp-for="Nom">Nom du livre</label>
+        <input asp-for="Nom" class="form-control" />
+        <span asp-validation-for="Nom" class="text-danger"></span>
     </div>
-    <span asp-validation-for="Name" class="text-danger"></span>
+
     <div class="input-group">
-        <label asp-for="Genres"></label>
-        <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
-        <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Id"))">
-        </select>
+        <label asp-for="Auteur">Auteur</label>
+        <input asp-for="Auteur" class="form-control" />
+        <span asp-validation-for="Auteur" class="text-danger"></span>
     </div>
-    <span asp-validation-for="Genres" class="text-danger"></span>
-    <input type="submit" value="Add" style="width: 100%; margin-top: 50px" />
+
+    <div class="input-group">
+        <label asp-for="Prix">Prix</label>
+        <input asp-for="Prix" class="form-control" />
+        <span asp-validation-for="Prix" class="text-danger"></span>
+    </div>
+
+    <div class="input-group">
+        <label asp-for="Contenu">Contenu</label>
+        <textarea asp-for="Contenu" class="form-control"></textarea>
+        <span asp-validation-for="Contenu" class="text-danger"></span>
+    </div>
+
+    <div class="input-group">
+        <label asp-for="Genres">Genres</label>
+       <select asp-for="Genres" asp-items="@(new SelectList(Model.AllGenres,"Id","Nom"))" class="form-control" multiple="multiple"></select>
+        <span asp-validation-for="Genres" class="text-danger"></span>
+    </div>
+
+    <input type="submit" value="Ajouter" class="btn btn-primary" style="margin-top: 20px;" />
 </form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
