@@ -36,3 +36,6 @@ char* execute() {
 char* get_route() {
 	return (char*)"test/plugin";
 }
+char* get_name() {
+	return (char*)"testPlugin";
+}
