@@ -9,19 +9,12 @@
       d:DesignHeight="450" d:DesignWidth="800"
       d:DataContext="{d:DesignInstance Type=vm:InDesignDetailsBook, d:IsDesignTimeCreatable=True}"
       Title="DetailsBook">
-
-    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1.075" />
-            <RowDefinition Height="48.925"/>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
             <TextBlock Text="{Binding CurrentBook.Nom}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center" FontWeight="Bold"/>
             <TextBlock Text="{Binding CurrentBook.Auteur}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
             <TextBlock Text="{Binding CurrentBook.Contenu}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
             <TextBlock Text="{Binding CurrentBook.Prix, StringFormat='{}{0:C}'}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
-            <Button Content="Details"
+            <Button Content="Back"
              Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}"
              CommandParameter="{Binding }"
              Margin="5"
@@ -30,5 +23,4 @@
              Foreground="Yellow"
             />
         </StackPanel>
-    </Grid>
 </Page>

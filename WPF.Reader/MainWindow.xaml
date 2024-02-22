@@ -71,6 +71,5 @@
         <!-- Contenu principal, tel que la grille de livres -->
         <ContentPresenter DockPanel.Dock="Top" Content="{Binding Path=Frame}" x:Name="Navigation"/>
         <!-- Ajout de la visibilité sur la liste des livres -->
-        <Frame DockPanel.Dock="Top" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
     </DockPanel>
 </Window>

@@ -1,18 +1,33 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WPF.Reader.Model;
+using WPF.Reader.Service;
 
 namespace WPF.Reader.ViewModel
 {
     //Permet de notifier l'interface utilisateur des changements de propriété, utilisé pour le data binding bi-directionnel
-    public partial class DetailsBook(Book book) : INotifyPropertyChanged
+    public partial class DetailsBook : INotifyPropertyChanged
     {
+        //Ici, on récupère le livre en cours, soit CurrentBook
+        public Book CurrentBook { get; init; }
+
+
+        public DetailsBook(Book book)
+        {
+            CurrentBook = book;
+            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(CurrentBook)));
+            Task.Run(async () =>
+            {
+                await Ioc.Default.GetService<LibraryService>().FetchBookDetails(CurrentBook.Id);
+
+            });
+        }
+
         //Déclenché chaque fois qu'une propriété du ViewModel change
         public event PropertyChangedEventHandler PropertyChanged;
-
-        //Ici, on récupère le livre en cours, soit CurrentBook
-        public Book CurrentBook { get; init; } = book;
 
 
         // Une commande permet de recevoir des évènement de l'IHM
@@ -26,8 +41,7 @@ namespace WPF.Reader.ViewModel
         {
         }
     }
-    public class InDesignDetailsBook : DetailsBook
+    public class InDesignDetailsBook() : DetailsBook(new Book())
     {
-        public InDesignDetailsBook() : base(new Book() /*{ Title = "Test Book" }*/) { }
     }
 }

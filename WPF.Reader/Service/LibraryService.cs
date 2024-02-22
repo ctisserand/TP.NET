@@ -28,6 +28,36 @@ namespace WPF.Reader.Service
             Task.Run(async () => await FetchBooksAsync());
         }
 
+
+        public async Task FetchBookDetails(int bookId)
+        {
+            try
+            {
+                string url = $"https://localhost:5001/api/Book/GetBook/{bookId}"; // Récupération d'un seul livre
+                Uri uri = new Uri(url); // Création d'un objet URI
+                var response = await _httpClient.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    // Lecture des données récupérées
+                    var json = await response.Content.ReadAsStringAsync();
+                    // Transformation des données récupérées JSON en objet Book
+                    var details = JsonConvert.DeserializeObject<Book>(json);
+                }
+                else
+                {
+                    // Gérer la réponse HTTP non réussie ici (par exemple, statut 404 ou 500)
+                    Console.WriteLine($"Erreur HTTP : {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Gérer l'exception (par exemple, en affichant un message d'erreur)
+                Console.WriteLine(ex.Message);
+            }
+
+
+        }
+
         public async Task FetchBooksAsync()
         {
             try
@@ -62,4 +92,5 @@ namespace WPF.Reader.Service
             }
         }
     }
+
 }
