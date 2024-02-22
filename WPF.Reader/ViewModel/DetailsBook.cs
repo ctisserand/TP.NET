@@ -14,9 +14,12 @@ namespace WPF.Reader.ViewModel
         //Ici, on récupère le livre en cours, soit CurrentBook
         public Book CurrentBook { get; init; }
 
+        private INavigationService _navigationService;
+
 
         public DetailsBook(Book book)
         {
+            _navigationService = Ioc.Default.GetService<INavigationService>();
             CurrentBook = book;
             PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(nameof(CurrentBook)));
             Task.Run(async () =>
@@ -40,6 +43,14 @@ namespace WPF.Reader.ViewModel
         public void ReadBook(Book book)
         {
         }
+
+        public ICommand GoBackCommand => new RelayCommand(() =>
+        {
+            if (_navigationService.CanGoBack)
+            {
+                _navigationService.GoBack();
+            }
+        });
     }
     public class InDesignDetailsBook() : DetailsBook(new Book())
     {

@@ -17,7 +17,6 @@
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                     <TextBlock Text="{Binding Nom}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center" FontWeight="Bold"/>
                     <TextBlock Text="{Binding Auteur}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
-                    <TextBlock Text="{Binding Genre}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
                     <TextBlock Text="{Binding Prix, StringFormat='{}{0:C}'}" Foreground="Yellow" FontFamily="Times New Roman" Margin="5" TextAlignment="Center"/>
                     <Button Content="Details"
                             Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}"
