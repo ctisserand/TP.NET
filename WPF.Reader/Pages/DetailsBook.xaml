@@ -12,7 +12,8 @@
 
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="1.075" />
+            <RowDefinition Height="48.925"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- il faut afficher les information du livre: Nom, Auteur, Prix, Genres-->

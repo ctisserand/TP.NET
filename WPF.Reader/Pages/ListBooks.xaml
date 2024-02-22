@@ -11,19 +11,19 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ListBooks">
     <StackPanel>
-        <!-- 
-            A vous de créer la liste avec le bon binding. Une <ListBox> fera l'affaire 
-            La propriété ItemsSource doit pointé vers la propiété Books de votre dataContext actuelle 
-            Utilisé ListBox.ItemTemplate pour définir comment sont affiché vos items
+        <ListBox ItemsSource="{Binding Books}">
             <ListBox.ItemTemplate>
-        
-            A vous de faire afficher les champs que vous voulez afficher pour savoir quel sont les livre disponible
-            <TextBlock Text="{Binding MyPropertyOnMyObjectBook}"/>
-            N'oublier pas non plus de rajouter un boutton quelque part pour allez voir les détails de votre livre
-            Les propriété Command et CommandParameter pourrons vous aider ! 
-            Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" 
-            CommandParameter="{Binding .}"
-        -->
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Titre}" Margin="5"/>
+                        <TextBlock Text="{Binding Auteur}" Margin="5"/>
+                        <TextBlock Text="{Binding Genre}" Margin="5"/>
+                        <TextBlock Text="{Binding Prix, StringFormat='{}{0:C}'}" Margin="5"/>
+                        <Button Content="Details" Command="{Binding Path=DataContext.ItemSelectedCommand, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" CommandParameter="{Binding}" Margin="5"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </StackPanel>
 </Page>
 

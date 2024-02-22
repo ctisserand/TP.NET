@@ -52,8 +52,7 @@
         <Border DockPanel.Dock="Top" Background="Black" Height="60" BorderBrush="Yellow" BorderThickness="0,0,0,1">
             <TextBlock Text="Librairiz" Foreground="Yellow" FontSize="34" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Times New Roman"/>
         </Border>
-        
-        
+
 
         <!-- Barre de recherche -->
         <Border DockPanel.Dock="Top" Background="Black" Height="50" VerticalAlignment="Center" CornerRadius="8" Margin="10">
@@ -71,8 +70,10 @@
 
         <!-- Contenu principal, tel que la grille de livres -->
         <ContentPresenter DockPanel.Dock="Top" Content="{Binding Path=Frame}" x:Name="Navigation"/>
+        <!-- Ajout de la visibilité sur la liste des livres -->
+        <Frame DockPanel.Dock="Top" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
 
-       
-        
+
+
     </DockPanel>
 </Window>
