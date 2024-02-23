@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Math.h"
-#include <iostream>
-#include <memory>
 
 
+
+using namespace std;
 float Q_rsqrt(float number) {
 	long i;
 	float x2, y;
@@ -22,15 +22,22 @@ float Q_rsqrt(float number) {
 
 // 
 int main() {
-	cout << "The inverse square root of 25 is " << Q_rsqrt(25) << " or almost ..." << endl;
 	cout << execute() << endl;
-	cout << get_route() << endl;
 	return 0;
 }
 
 
 char* execute() {
-	return (char*)"test";
+	stringstream s;
+	s << "The inverse square root of 25 is ";
+	s << Q_rsqrt(25); // appending the float value to the streamclass 
+	s << " or almost ...";
+	string result = s.str(); //converting the float value to string 
+	// Dynamically allocate memory for the returned string
+	char* ptr = new char[result.size() + 1]; // +1 for terminating NUL
+	// Copy source string in dynamically allocated string buffer
+	strcpy_s(ptr, result.size() +1, result.c_str());
+	return ptr;
 }
 
 char* get_route() {
