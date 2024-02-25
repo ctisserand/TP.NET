@@ -29,7 +29,7 @@ label {
     <div class="input-group">
         <label asp-for="Books"></label>
         <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
-        <select asp-for="Books" asp-items="@(new SelectList(Model.AllBooks,"Id","Title"))">
+        <select asp-for="Books" asp-items="@(new SelectList(Model.AllBooks,"Id","Name"))">
         </select>
     </div>
     <span asp-validation-for="Books" class="text-danger"></span>

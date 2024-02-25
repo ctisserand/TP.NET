@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ASP.Server.Database;
 using ASP.Server.Models;
 using ASP.Server.ViewModels;
@@ -49,5 +51,33 @@ namespace ASP.Server.Controllers
                 AllGenres = libraryDbContext.Genres
             });
         }
+
+        /*   public ActionResult<StatisticsViewModel> Statistics()
+           {
+               var viewModel = new StatisticsViewModel();
+
+               // Nombre total de livres
+               viewModel.TotalBooks = libraryDbContext.Books.Count();
+
+               // Nombre de livres par auteur
+               viewModel.BooksPerAuthor = libraryDbContext.Authors
+                   .ToDictionary(author => author.Name,
+                                 author => author.Books.Count);
+
+               // Statistiques sur le nombre de mots
+               var wordCounts = libraryDbContext.Books.Select(b => b.WordCount).ToList();
+               viewModel.MaxWords = wordCounts.Max();
+               viewModel.MinWords = wordCounts.Min();
+               viewModel.AverageWords = wordCounts.Average();
+
+               // Calcul de la médiane
+               var mid = wordCounts.Count / 2;
+               viewModel.MedianWords = wordCounts.Count % 2 != 0
+                   ? wordCounts[mid]
+                   : (wordCounts[mid] + wordCounts[mid - 1]) / 2.0;
+
+               return View(viewModel);
+           }*/
+
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Threading.Tasks;
 using System.Globalization;
+using ASP.Server.Service;
 
 namespace ASP.Server
 {
@@ -25,6 +26,7 @@ namespace ASP.Server
             services.AddSwaggerDocument();
 
             services.AddAutoMapper(typeof(MappingProfile));
+            services.AddSingleton<LibraryService>();
 
             services.AddMvc();
         }

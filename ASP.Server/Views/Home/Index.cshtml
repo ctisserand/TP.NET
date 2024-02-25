@@ -1,10 +1,65 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ASP.Server.ViewModels.StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statistiques de la Bibliothèque";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    /* Ajoutez ou modifiez vos styles ici */
+    .stats-card {
+        text-align: center;
+        width: calc(33% - 20px); 
+        margin: 10px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: inline-block; /* Pour l'affichage en ligne des cartes */
+        vertical-align: top; /* Aligner les cartes en haut */
+    }
+
+    .stats-title {
+        margin-bottom: 15px;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .stats-number {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #666;
+    }
+
+
+</style>
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    
+    <div class="stats-card">
+        <div class="stats-title">Total livres</div>
+        <div class="stats-number">@(Model.TotalBooks)</div>
+    </div>
+
+    <div class="stats-card">
+        <div class="stats-title">Max mots</div>
+        <div class="stats-number">@Model.MaxWords</div>
+    </div>
+
+    <div class="stats-card">
+        <div class="stats-title">Min mots</div>
+        <div class="stats-number">@Model.MinWords</div>
+    </div>
+
+    <div class="stats-card">
+        <div class="stats-title">Moyenne mots</div>
+        <div class="stats-number">@Model.AverageWords.ToString("N0")</div>
+    </div>
+
+    <div class="stats-card">
+        <div class="stats-title">Médiane mots</div>
+        <div class="stats-number">@Model.MedianWords</div>
+    </div>
+    
+
 </div>
-
-

@@ -14,16 +14,12 @@
 
   <ItemGroup>
     <Compile Remove="Areas\**" />
-    <Compile Remove="Service\**" />
     <Compile Remove="Views\ListeBooks\**" />
     <Content Remove="Areas\**" />
-    <Content Remove="Service\**" />
     <Content Remove="Views\ListeBooks\**" />
     <EmbeddedResource Remove="Areas\**" />
-    <EmbeddedResource Remove="Service\**" />
     <EmbeddedResource Remove="Views\ListeBooks\**" />
     <None Remove="Areas\**" />
-    <None Remove="Service\**" />
     <None Remove="Views\ListeBooks\**" />
   </ItemGroup>
 
